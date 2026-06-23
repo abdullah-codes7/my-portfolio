@@ -58,9 +58,8 @@ function About() {
               01 — About
             </div>
             <h2 className="section-title">
-              <span className={`reveal-mask ${titleVisible ? 'visible' : ''}`}>
-                <span className="reveal-line">About Me</span>
-              </span>
+              <span className="section-title-line">About</span>
+              <span className="section-title-future">ME</span>
             </h2>
             <p className="section-subtitle">Who I am and what drives me</p>
           </div>

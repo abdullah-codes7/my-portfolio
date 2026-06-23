@@ -54,9 +54,8 @@ function Contact() {
             04 — Contact
           </div>
           <h2 className="section-title">
-            <span className={`reveal-mask ${titleVisible ? 'visible' : ''}`}>
-              <span className="reveal-line">Get In Touch</span>
-            </span>
+            <span className="section-title-line">Get In</span>
+            <span className="section-title-future">TOUCH</span>
           </h2>
           <p className="section-subtitle">Let's build something together</p>
         </div>

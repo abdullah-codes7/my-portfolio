@@ -50,6 +50,22 @@
   filter: drop-shadow(0 0 30px rgba(255,255,255,0.1));
 }
 
+.section-title-line {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  -webkit-text-fill-color: initial;
+  background: none;
+  filter: none;
+  color: var(--text-secondary);
+}
+
+.section-title-future {
+  display: block;
+}
+
 .section-subtitle {
   font-family: var(--font-body);
   font-size: 1rem;

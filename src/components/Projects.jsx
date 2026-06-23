@@ -100,9 +100,8 @@ function Projects() {
             02 — Work
           </div>
           <h2 className="section-title">
-            <span className={`reveal-mask ${titleVisible ? 'visible' : ''}`}>
-              <span className="reveal-line">Selected Work</span>
-            </span>
+            <span className="section-title-line">Selected</span>
+            <span className="section-title-future">WORK</span>
           </h2>
           <p className="section-subtitle">Featured projects I've built</p>
         </div>

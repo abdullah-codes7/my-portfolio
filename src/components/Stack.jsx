@@ -108,9 +108,8 @@ function Stack() {
             03 — Stack
           </div>
           <h2 className="section-title">
-            <span className={`reveal-mask ${titleVisible ? 'visible' : ''}`}>
-              <span className="reveal-line">Tech Stack</span>
-            </span>
+            <span className="section-title-line">Tech</span>
+            <span className="section-title-future">STACK</span>
           </h2>
           <p className="section-subtitle">Technologies I work with</p>
         </div>

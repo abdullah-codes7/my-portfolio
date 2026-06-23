@@ -89,13 +89,9 @@ function Process() {
             <span className="eyebrow-dot"></span>
             02 — Process
           </div>
-          <h2 className="process-title">
-            <span className={`reveal-mask ${titleVisible ? 'visible' : ''}`}>
-              <span className="reveal-line process-title-line">How I</span>
-            </span>
-            <span className={`reveal-mask ${titleVisible ? 'visible' : ''}`}>
-              <span className="reveal-line process-title-future">WORK</span>
-            </span>
+          <h2 className="section-title">
+            <span className="section-title-line">How I</span>
+            <span className="section-title-future">WORK</span>
           </h2>
           <p className="process-subtitle">
             A systematic approach to building software — from first principles to production-ready systems.
