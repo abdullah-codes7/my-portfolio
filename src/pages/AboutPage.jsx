@@ -171,8 +171,8 @@ function AboutPage() {
         ease: 'none',
         scrollTrigger: {
           trigger: container.parentElement,
-          pin: true,
           scrub: 1,
+          start: 'top top',
           end: () => `+=${scrollWidth}`,
           invalidateOnRefresh: true,
         },
