@@ -9,6 +9,8 @@ function AnimatedTitle({ line1, line2, delay = 0, className = '' }) {
     const el = ref.current
     if (!el) return
 
+    const timer = setTimeout(() => setInView(true), delay * 1000 + 100)
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -16,12 +18,15 @@ function AnimatedTitle({ line1, line2, delay = 0, className = '' }) {
           observer.unobserve(el)
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0, rootMargin: '50px' }
     )
 
     observer.observe(el)
-    return () => observer.unobserve(el)
-  }, [])
+    return () => {
+      observer.unobserve(el)
+      clearTimeout(timer)
+    }
+  }, [delay])
 
   return (
     <h2 className={`at-title ${className}`} ref={ref}>
