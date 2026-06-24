@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useScrollAnimation, useStaggerAnimation, useCountUp, useTilt } from '../hooks/useScrollAnimation'
+import AnimatedTitle from './AnimatedTitle'
 import './About.css'
 
 function parseStat(value) {
@@ -56,10 +57,7 @@ function About() {
               <span className="eyebrow-dot"></span>
               01 — About
             </div>
-            <h2 className="section-title">
-              <span className="section-title-line">About</span>
-              <span className="section-title-future">ME</span>
-            </h2>
+            <AnimatedTitle line1="About" line2="ME" delay={3.8} />
             <div className="about-title-accent"></div>
           </div>
 

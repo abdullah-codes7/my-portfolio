@@ -1,4 +1,5 @@
 import { useScrollAnimation, useStaggerAnimation, useTilt, useScrollTilt } from '../hooks/useScrollAnimation'
+import AnimatedTitle from './AnimatedTitle'
 import './Projects.css'
 
 const projects = [
@@ -92,10 +93,7 @@ function Projects() {
             <span className="eyebrow-dot"></span>
             02 — Work
           </div>
-          <h2 className="section-title">
-            <span className="section-title-line">Selected</span>
-            <span className="section-title-future">WORK</span>
-          </h2>
+          <AnimatedTitle line1="Selected" line2="WORK" delay={0.1} />
           <p className="section-subtitle">Featured projects I've built</p>
         </div>
 

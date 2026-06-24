@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useScrollAnimation, useStaggerAnimation, useCountUp, useTilt, useScrollTilt } from '../hooks/useScrollAnimation'
+import AnimatedTitle from '../components/AnimatedTitle'
 import './AboutPage.css'
 
 const timeline = [
@@ -186,10 +187,7 @@ function AboutPage() {
             <span className="eyebrow-dot"></span>
             About
           </div>
-          <h1 className="page-title">
-            <span className="section-title-line">About</span>
-            <span className="section-title-future">ME</span>
-          </h1>
+          <AnimatedTitle line1="About" line2="ME" delay={0.3} className="at-page" />
           <p className="page-subtitle">The person behind the code</p>
         </div>
 

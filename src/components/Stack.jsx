@@ -1,4 +1,5 @@
 import { useScrollAnimation, useStaggerAnimation, useMouseParallax, useTilt, useCountUp, useScrollTilt } from '../hooks/useScrollAnimation'
+import AnimatedTitle from './AnimatedTitle'
 import './Stack.css'
 
 const expertise = [
@@ -149,10 +150,7 @@ function Stack() {
             <span className="eyebrow-dot"></span>
             03 — Stack
           </div>
-          <h2 className="section-title">
-            <span className="section-title-line">Tech</span>
-            <span className="section-title-future">STACK</span>
-          </h2>
+          <AnimatedTitle line1="Tech" line2="STACK" delay={0.1} />
         </div>
 
         {/* Core Expertise Bento */}

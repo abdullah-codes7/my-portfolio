@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useScrollAnimation, useMagnetic, useTilt } from '../hooks/useScrollAnimation'
+import AnimatedTitle from './AnimatedTitle'
 import './Contact.css'
 
 const typingTexts = [
@@ -98,10 +99,7 @@ function Contact() {
             <span className="eyebrow-dot"></span>
             04 — Contact
           </div>
-          <h2 className="section-title">
-            <span className="section-title-line">Get In</span>
-            <span className="section-title-future">TOUCH</span>
-          </h2>
+          <AnimatedTitle line1="Get In" line2="TOUCH" delay={0.1} />
         </div>
 
         {/* Main Grid */}

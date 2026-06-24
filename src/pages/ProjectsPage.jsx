@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useScrollAnimation, useStaggerAnimation, useTilt, useScrollTilt } from '../hooks/useScrollAnimation'
+import AnimatedTitle from '../components/AnimatedTitle'
 import './ProjectsPage.css'
 
 const allProjects = [
@@ -146,11 +147,7 @@ function ProjectsPage() {
             <span className="eyebrow-dot"></span>
             Projects
           </div>
-          <h1 className="page-title">
-            <span className={`reveal-mask ${titleVisible ? 'visible' : ''}`}>
-              <span className="reveal-line">All Projects</span>
-            </span>
-          </h1>
+          <AnimatedTitle line1="All" line2="PROJECTS" delay={0.3} className="at-page" />
           <p className="page-subtitle">A collection of work across full stack and Web3</p>
         </div>
 

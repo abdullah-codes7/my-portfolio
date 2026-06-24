@@ -1,4 +1,5 @@
 import { useScrollAnimation, useStaggerAnimation, useTilt } from '../hooks/useScrollAnimation'
+import AnimatedTitle from './AnimatedTitle'
 import './Process.css'
 
 const steps = [
@@ -89,10 +90,7 @@ function Process() {
             <span className="eyebrow-dot"></span>
             02 — Process
           </div>
-          <h2 className="section-title">
-            <span className="section-title-line">How I</span>
-            <span className="section-title-future">WORK</span>
-          </h2>
+          <AnimatedTitle line1="How I" line2="WORK" delay={0.1} />
           <p className="process-subtitle">
             A systematic approach to building software — from first principles to production-ready systems.
           </p>

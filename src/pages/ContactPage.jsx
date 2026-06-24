@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useScrollAnimation, useStaggerAnimation, useMagnetic, useTilt, useScrollTilt } from '../hooks/useScrollAnimation'
+import AnimatedTitle from '../components/AnimatedTitle'
 import './ContactPage.css'
 
 const contactMethods = [
@@ -121,10 +122,7 @@ timeZone: 'Asia/Karachi',
             <span className="eyebrow-dot"></span>
             Contact
           </div>
-          <h1 className="page-title">
-            <span className="section-title-line">Get In</span>
-            <span className="section-title-future">TOUCH</span>
-          </h1>
+          <AnimatedTitle line1="Get In" line2="TOUCH" delay={0.3} className="at-page" />
         </div>
 
         {/* Terminal Hero */}
