@@ -143,6 +143,7 @@ function Stack() {
   const mousePos = useMouseParallax(0.015)
   const scrollContainerRef = useRef(null)
   const scrollWrapperRef = useRef(null)
+  const proficiencyRef = useRef(null)
 
   useEffect(() => {
     const container = scrollContainerRef.current
@@ -177,6 +178,24 @@ function Stack() {
             onRefresh: setWrapperHeight,
           },
         })
+
+        // Animate skill bars when proficiency panel enters viewport
+        const bars = proficiencyRef.current?.querySelectorAll('.skill-progress')
+        if (bars?.length) {
+          gsap.set(bars, { width: '0%' })
+          gsap.to(bars, {
+            width: (i) => `${technologies[i].level}%`,
+            stagger: 0.06,
+            duration: 1.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: proficiencyRef.current,
+              containerAnimation: tween,
+              start: 'left 80%',
+              toggleActions: 'play none none none',
+            },
+          })
+        }
 
         return () => {
           tween.scrollTrigger && tween.scrollTrigger.kill()
@@ -264,7 +283,7 @@ function Stack() {
           </div>
 
           {/* Proficiency */}
-          <div className="stack-h-panel stack-h-panel-wide">
+          <div className="stack-h-panel stack-h-panel-wide" ref={proficiencyRef}>
             <div className="stack-h-panel-inner">
               <h3 className="stack-section-label">
                 <span className="label-line"></span>
@@ -281,7 +300,7 @@ function Stack() {
                     <div className="skill-bar">
                       <div
                         className="skill-progress"
-                        style={{ width: `${tech.level}%` }}
+                        style={{ width: '0%' }}
                       ></div>
                     </div>
                   </div>
