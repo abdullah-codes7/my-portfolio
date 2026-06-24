@@ -6,6 +6,7 @@ import Footer from './components/Footer'
 import PageTransition from './components/PageTransition'
 import Home from './pages/Home'
 import ProjectsPage from './pages/ProjectsPage'
+import ProjectDetail from './pages/ProjectDetail'
 import AboutPage from './pages/AboutPage'
 import ContactPage from './pages/ContactPage'
 import './App.css'
@@ -61,6 +62,7 @@ function AppContent() {
           <Routes>
             <Route path="/" element={<Home mousePosition={mousePosition} scrollProgress={scrollProgress} />} />
             <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/projects/:id" element={<ProjectDetail />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
           </Routes>
