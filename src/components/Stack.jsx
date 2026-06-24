@@ -230,34 +230,33 @@ function Stack() {
           </div>
           <AnimatedTitle line1="Tech" line2="STACK" delay={0.1} />
         </div>
-
-        {/* Core Expertise — stays vertical */}
-        <div
-          ref={expertiseRef}
-          className={`expertise-bento anim-fade-up ${expertiseVisible ? 'visible' : ''}`}
-        >
-          <h3 className="stack-section-label">
-            <span className="label-line"></span>
-            Core Expertise
-            <span className="label-line"></span>
-          </h3>
-          <div className="expertise-grid">
-            {expertise.map((item, i) => (
-              <ExpertiseCard
-                key={item.name}
-                item={item}
-                index={i}
-                visible={visibleExpertise.has(i)}
-                setRef={setExpertiseRef}
-              />
-            ))}
-          </div>
-        </div>
       </div>
 
-      {/* Horizontal Scroll — Toolbox + Proficiency */}
+      {/* Horizontal Scroll — Core Expertise + Toolbox + Proficiency */}
       <div className="stack-h-wrapper" ref={scrollWrapperRef}>
         <div className="stack-h-container" ref={scrollContainerRef}>
+
+          {/* Core Expertise */}
+          <div className="stack-h-panel">
+            <div className="stack-h-panel-inner">
+              <h3 className="stack-section-label">
+                <span className="label-line"></span>
+                Core Expertise
+                <span className="label-line"></span>
+              </h3>
+              <div className="expertise-grid">
+                {expertise.map((item, i) => (
+                  <ExpertiseCard
+                    key={item.name}
+                    item={item}
+                    index={i}
+                    visible={true}
+                    setRef={() => () => {}}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
 
           {/* Toolbox */}
           <div className="stack-h-panel">
