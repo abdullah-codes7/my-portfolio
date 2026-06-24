@@ -38,9 +38,13 @@ function ProjectDetail() {
 
         {/* Hero Image */}
         <div className="pd-hero">
-          <div className="pd-hero-placeholder">
-            <span className="pd-hero-text">{project.title}</span>
-          </div>
+          {project.image ? (
+            <img src={project.image} alt={project.title} className="pd-hero-img" />
+          ) : (
+            <div className="pd-hero-placeholder">
+              <span className="pd-hero-text">{project.title}</span>
+            </div>
+          )}
         </div>
 
         {/* Meta */}

@@ -21,6 +21,7 @@ function ProjectCard({ project, index, setRef, visible }) {
       <Link to={`/projects/${project.id}`} style={{ textDecoration: 'none' }}>
         <article ref={tiltRef} className="project-page-core tilt-card spotlight-card">
           <span className="tilt-glare" aria-hidden="true"></span>
+          {project.image && <img src={project.image} alt={project.title} className="project-page-img" />}
           <div className="project-page-content-overlay"></div>
 
           <div className="project-page-top">
