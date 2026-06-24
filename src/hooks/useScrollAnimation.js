@@ -338,7 +338,6 @@ export function useScrollRotate(maxDeg = 15) {
 
 export function useScrollTilt({ maxTilt = 8, axis = 'y' } = {}) {
   const ref = useRef(null)
-  const [tilt, setTilt] = useState(0)
 
   useEffect(() => {
     if (prefersReducedMotion()) return
@@ -351,17 +350,19 @@ export function useScrollTilt({ maxTilt = 8, axis = 'y' } = {}) {
       const elCenter = rect.top + rect.height / 2
       const normalized = (elCenter - center) / center
       const clamped = Math.min(Math.max(normalized, -1), 1)
-      setTilt(clamped * maxTilt)
+      const tilt = clamped * maxTilt
+
+      if (axis === 'y') {
+        ref.current.style.setProperty('--scroll-tilt', `${tilt}deg`)
+      } else {
+        ref.current.style.setProperty('--scroll-tilt', `${-tilt}deg`)
+      }
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     handleScroll()
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [maxTilt])
+  }, [maxTilt, axis])
 
-  const style = axis === 'y'
-    ? { transform: `perspective(800px) rotateY(${tilt}deg)` }
-    : { transform: `perspective(800px) rotateX(${-tilt}deg)` }
-
-  return [ref, style]
+  return ref
 }

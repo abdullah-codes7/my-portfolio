@@ -75,21 +75,16 @@ const filters = ['All', 'Full Stack', 'Web3', 'DeFi', 'Backend']
 
 function ProjectCard({ project, index, setRef, visible }) {
   const tiltRef = useTilt({ max: 8, scale: 1.02 })
-  const [scrollRef, scrollStyle] = useScrollTilt({ maxTilt: 5, axis: 'y' })
-
-  const combinedRef = (el) => {
-    tiltRef.current = el
-    scrollRef.current = el
-  }
+  const scrollRef = useScrollTilt({ maxTilt: 5, axis: 'y' })
 
   return (
     <div
       key={project.id}
-      ref={setRef(index)}
+      ref={(el) => { setRef(index)(el); scrollRef.current = el }}
       className={`project-page-shell anim-scale-in ${visible ? 'visible' : ''}`}
       style={{ transitionDelay: `${index * 0.1}s` }}
     >
-      <article ref={combinedRef} className="project-page-core tilt-card spotlight-card" style={scrollStyle}>
+      <article ref={tiltRef} className="project-page-core tilt-card spotlight-card">
         <span className="tilt-glare" aria-hidden="true"></span>
         <div className="project-page-content-overlay"></div>
 

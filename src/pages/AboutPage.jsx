@@ -112,20 +112,15 @@ function parseStat(value) {
 
 function ValueCard({ value, index, visible, setRef }) {
   const tiltRef = useTilt({ max: 10, scale: 1.02 })
-  const [scrollRef, scrollStyle] = useScrollTilt({ maxTilt: 5, axis: 'y' })
-
-  const combinedRef = (el) => {
-    tiltRef.current = el
-    scrollRef.current = el
-  }
+  const scrollRef = useScrollTilt({ maxTilt: 5, axis: 'y' })
 
   return (
     <div
-      ref={setRef(index)}
+      ref={(el) => { setRef(index)(el); scrollRef.current = el }}
       className={`value-shell anim-scale-in ${visible(index) ? 'visible' : ''}`}
       style={{ transitionDelay: `${index * 0.12}s` }}
     >
-      <div ref={combinedRef} className="value-core tilt-card spotlight-card" style={scrollStyle}>
+      <div ref={tiltRef} className="value-core tilt-card spotlight-card">
         <span className="tilt-glare" aria-hidden="true"></span>
         <div className="value-icon">{value.icon}</div>
         <h3 className="value-title">{value.title}</h3>

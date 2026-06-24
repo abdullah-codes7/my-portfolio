@@ -100,24 +100,20 @@ function ExpertiseCard({ item, index, visible, setRef }) {
 
 function CategoryCard({ category, index, setCatRef, visible, mousePos }) {
   const tiltRef = useTilt({ max: 10, scale: 1.03 })
-  const [scrollRef, scrollStyle] = useScrollTilt({ maxTilt: 5, axis: 'y' })
-
-  const combinedRef = (el) => {
-    tiltRef.current = el
-    scrollRef.current = el
-  }
+  const scrollRef = useScrollTilt({ maxTilt: 5, axis: 'y' })
 
   return (
     <div
       key={category.title}
-      ref={setCatRef(index)}
+      ref={(el) => { setCatRef(index)(el); scrollRef.current = el }}
       className={`category-shell anim-fade-up ${visible ? 'visible' : ''}`}
       style={{
         transitionDelay: `${index * 0.1}s`,
-        transform: `translate(${mousePos.x * (index % 2 === 0 ? 0.3 : -0.3)}px, ${mousePos.y * 0.2}px)`
       }}
     >
-      <div ref={combinedRef} className="category-core tilt-card spotlight-card" style={scrollStyle}>
+      <div ref={tiltRef} className="category-core tilt-card spotlight-card" style={{
+        transform: `translate(${mousePos.x * (index % 2 === 0 ? 0.3 : -0.3)}px, ${mousePos.y * 0.2}px)`
+      }}>
         <span className="tilt-glare" aria-hidden="true"></span>
         <div className="category-icon">{category.icon}</div>
         <h3 className="category-title">{category.title}</h3>

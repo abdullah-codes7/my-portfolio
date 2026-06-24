@@ -235,6 +235,12 @@
   clip-path: inset(0 0 0 0);
 }
 
+/* Scroll Tilt — uses CSS custom property set by useScrollTilt hook */
+[style*="--scroll-tilt"] {
+  transform: perspective(800px) rotateY(var(--scroll-tilt, 0deg));
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 /* Card Tilt on Hover */
 .card-tilt {
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),

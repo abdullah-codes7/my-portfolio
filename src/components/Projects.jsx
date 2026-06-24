@@ -38,23 +38,17 @@ const projects = [
 
 function ProjectCard({ project, index, setRef, visible }) {
   const tiltRef = useTilt({ max: 8, scale: 1.03 })
-  const [scrollRef, scrollStyle] = useScrollTilt({ maxTilt: 6, axis: 'y' })
-
-  const combinedRef = (el) => {
-    tiltRef.current = el
-    scrollRef.current = el
-  }
+  const scrollRef = useScrollTilt({ maxTilt: 6, axis: 'y' })
 
   return (
     <div
-      ref={setRef(index)}
+      ref={(el) => { setRef(index)(el); scrollRef.current = el }}
       className={`project-shell anim-scale-in ${visible ? 'visible' : ''}`}
       style={{ transitionDelay: `${index * 0.12}s` }}
     >
       <article
-        ref={combinedRef}
+        ref={tiltRef}
         className="project-core tilt-card spotlight-card"
-        style={scrollStyle}
       >
         <span className="tilt-glare" aria-hidden="true"></span>
 

@@ -294,23 +294,18 @@ timeZone: 'Asia/Karachi',
 
 function ContactMethod({ method, index, visible, setRef }) {
   const tiltRef = useTilt({ max: 6, scale: 1.02 })
-  const [scrollRef, scrollStyle] = useScrollTilt({ maxTilt: 4, axis: 'y' })
-
-  const combinedRef = (el) => {
-    tiltRef.current = el
-    scrollRef.current = el
-  }
+  const scrollRef = useScrollTilt({ maxTilt: 4, axis: 'y' })
 
   return (
     <a
-      ref={setRef(index)}
+      ref={(el) => { setRef(index)(el); scrollRef.current = el }}
       href={method.href}
       target={method.href.startsWith('http') ? '_blank' : undefined}
       rel={method.href.startsWith('http') ? 'noopener noreferrer' : undefined}
       className={`cp-method-shell anim-fade-up ${visible(index) ? 'visible' : ''}`}
       style={{ transitionDelay: `${index * 0.08}s` }}
     >
-      <div ref={combinedRef} className="cp-method-core tilt-card spotlight-card" style={scrollStyle}>
+      <div ref={tiltRef} className="cp-method-core tilt-card spotlight-card">
         <span className="tilt-glare" aria-hidden="true"></span>
         <div className="cp-method-icon">{method.icon}</div>
         <div className="cp-method-info">
