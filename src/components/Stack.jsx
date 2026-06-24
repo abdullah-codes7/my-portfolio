@@ -1,11 +1,6 @@
-import { useRef, useEffect } from 'react'
 import { useScrollAnimation, useStaggerAnimation, useMouseParallax, useTilt, useCountUp, useScrollTilt } from '../hooks/useScrollAnimation'
 import AnimatedTitle from './AnimatedTitle'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './Stack.css'
-
-gsap.registerPlugin(ScrollTrigger)
 
 const expertise = [
   { name: 'React / Next.js', level: 95, suffix: '%', years: '3+' },
@@ -140,91 +135,9 @@ function Stack() {
   const [titleRef, titleVisible] = useScrollAnimation(0.2)
   const [expertiseRef, expertiseVisible] = useScrollAnimation(0.1)
   const [setExpertiseRef, visibleExpertise] = useStaggerAnimation(expertise.length, 0.1)
+  const [setCatRef, visibleCats] = useStaggerAnimation(categories.length, 0.1)
+  const [skillsRef, skillsVisible] = useScrollAnimation(0.1)
   const mousePos = useMouseParallax(0.015)
-  const scrollContainerRef = useRef(null)
-  const scrollWrapperRef = useRef(null)
-  const proficiencyRef = useRef(null)
-
-  useEffect(() => {
-    const container = scrollContainerRef.current
-    const wrapper = scrollWrapperRef.current
-    if (!container || !wrapper) return
-
-    const mm = gsap.matchMedia()
-
-    mm.add(
-      {
-        isDesktop: '(min-width: 769px) and (pointer: fine)',
-        reduceMotion: '(prefers-reduced-motion: reduce)',
-      },
-      (ctx) => {
-        if (!ctx.conditions.isDesktop || ctx.conditions.reduceMotion) return
-
-        const setWrapperHeight = () => {
-          const scrollWidth = container.scrollWidth - window.innerWidth
-          wrapper.style.height = `${scrollWidth + window.innerHeight}px`
-        }
-        setWrapperHeight()
-
-        const tween = gsap.to(container, {
-          x: () => -(container.scrollWidth - window.innerWidth),
-          ease: 'none',
-          scrollTrigger: {
-            trigger: wrapper,
-            start: 'top top',
-            end: () => `+=${container.scrollWidth - window.innerWidth}`,
-            scrub: 1,
-            invalidateOnRefresh: true,
-            onRefresh: setWrapperHeight,
-            onUpdate: (self) => {
-              const bars = proficiencyRef.current?.querySelectorAll('.skill-progress')
-              if (!bars?.length) return
-
-              const panel = proficiencyRef.current
-              const panelLeft = panel.offsetLeft
-              const panelWidth = panel.offsetWidth
-              const containerWidth = container.scrollWidth
-              const progress = self.progress
-
-              const viewStart = progress * (containerWidth - window.innerWidth)
-              const viewEnd = viewStart + window.innerWidth
-
-              if (viewEnd > panelLeft + panelWidth * 0.3) {
-                bars.forEach((bar, i) => {
-                  if (!bar.dataset.animated) {
-                    bar.dataset.animated = 'true'
-                    gsap.to(bar, {
-                      width: `${technologies[i].level}%`,
-                      duration: 1.2,
-                      delay: i * 0.06,
-                      ease: 'power3.out',
-                    })
-                  }
-                })
-              }
-            },
-          },
-        })
-
-        return () => {
-          tween.scrollTrigger && tween.scrollTrigger.kill()
-          tween.kill()
-        }
-      }
-    )
-
-    const refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 300)
-    const refreshTimer2 = setTimeout(() => ScrollTrigger.refresh(), 1000)
-    const onLoad = () => ScrollTrigger.refresh()
-    window.addEventListener('load', onLoad)
-
-    return () => {
-      clearTimeout(refreshTimer)
-      clearTimeout(refreshTimer2)
-      window.removeEventListener('load', onLoad)
-      mm.revert()
-    }
-  }, [])
 
   return (
     <section className="stack" id="stack">
@@ -240,8 +153,11 @@ function Stack() {
           <AnimatedTitle line1="Tech" line2="STACK" delay={0.1} />
         </div>
 
-        {/* Core Expertise — vertical */}
-        <div className="expertise-bento">
+        {/* Core Expertise Bento */}
+        <div
+          ref={expertiseRef}
+          className={`expertise-bento anim-fade-up ${expertiseVisible ? 'visible' : ''}`}
+        >
           <h3 className="stack-section-label">
             <span className="label-line"></span>
             Core Expertise
@@ -253,68 +169,63 @@ function Stack() {
                 key={item.name}
                 item={item}
                 index={i}
-                visible={true}
-                setRef={() => () => {}}
+                visible={visibleExpertise.has(i)}
+                setRef={setExpertiseRef}
               />
             ))}
           </div>
         </div>
-      </div>
 
-      {/* Horizontal Scroll — Toolbox + Proficiency */}
-      <div className="stack-h-wrapper" ref={scrollWrapperRef}>
-        <div className="stack-h-container" ref={scrollContainerRef}>
-
-          {/* Toolbox */}
-          <div className="stack-h-panel">
-            <div className="stack-h-panel-inner">
-              <h3 className="stack-section-label">
-                <span className="label-line"></span>
-                Toolbox
-                <span className="label-line"></span>
-              </h3>
-              <div className="stack-categories">
-                {categories.map((category, index) => (
-                  <CategoryCard
-                    key={category.title}
-                    category={category}
-                    index={index}
-                    setCatRef={() => () => {}}
-                    visible={true}
-                    mousePos={mousePos}
-                  />
-                ))}
-              </div>
-            </div>
+        {/* Categories */}
+        <div className="categories-section">
+          <h3 className="stack-section-label">
+            <span className="label-line"></span>
+            Toolbox
+            <span className="label-line"></span>
+          </h3>
+          <div className="stack-categories">
+            {categories.map((category, index) => (
+              <CategoryCard
+                key={category.title}
+                category={category}
+                index={index}
+                setCatRef={setCatRef}
+                visible={visibleCats.has(index)}
+                mousePos={mousePos}
+              />
+            ))}
           </div>
+        </div>
 
-          {/* Proficiency */}
-          <div className="stack-h-panel stack-h-panel-wide" ref={proficiencyRef}>
-            <div className="stack-h-panel-inner">
-              <h3 className="stack-section-label">
-                <span className="label-line"></span>
-                Proficiency
-                <span className="label-line"></span>
-              </h3>
-              <div className="skills-grid">
-                {technologies.map((tech, i) => (
-                  <div key={tech.name} className="skill-item">
-                    <div className="skill-header">
-                      <span className="skill-name">{tech.name}</span>
-                      <span className="skill-level">{tech.level}%</span>
-                    </div>
-                    <div className="skill-bar">
-                      <div
-                        className="skill-progress"
-                        style={{ width: '0%' }}
-                      ></div>
-                    </div>
-                  </div>
-                ))}
+        {/* Full Proficiency */}
+        <div
+          ref={skillsRef}
+          className={`skills-section anim-blur-in ${skillsVisible ? 'visible' : ''}`}
+        >
+          <h3 className="stack-section-label">
+            <span className="label-line"></span>
+            Proficiency
+            <span className="label-line"></span>
+          </h3>
+          <div className="skills-grid">
+            {technologies.map((tech, i) => (
+              <div key={tech.name} className="skill-item">
+                <div className="skill-header">
+                  <span className="skill-name">{tech.name}</span>
+                  <span className="skill-level">{tech.level}%</span>
+                </div>
+                <div className="skill-bar">
+                  <div
+                    className="skill-progress"
+                    style={{
+                      width: skillsVisible ? `${tech.level}%` : '0%',
+                      transitionDelay: `${i * 0.06}s`,
+                    }}
+                  ></div>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
-
         </div>
       </div>
     </section>

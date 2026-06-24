@@ -1,6 +1,8 @@
 .stack {
   position: relative;
+  padding: clamp(6rem, 12vw, 10rem) clamp(1.5rem, 4vw, 4rem);
   background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
+  overflow: hidden;
 }
 
 .stack::before {
@@ -16,59 +18,10 @@
 .stack-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 4vw, 4rem) 0;
 }
 
 .stack-header {
-  margin-bottom: clamp(1rem, 2vw, 1.5rem);
-}
-
-/* ==================== */
-/* CORE EXPERTISE BENTO */
-/* ==================== */
-.expertise-bento {
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-
-/* ==================== */
-/* GSAP HORIZONTAL SCROLL */
-/* ==================== */
-.stack-h-wrapper {
-  position: relative;
-  width: 100%;
-  height: 300vh;
-}
-
-.stack-h-container {
-  display: flex;
-  flex-wrap: nowrap;
-  width: max-content;
-  height: 100dvh;
-  position: sticky;
-  top: 0;
-  will-change: transform;
-  gap: 0;
-}
-
-.stack-h-panel {
-  flex: 0 0 auto;
-  width: 100vw;
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: clamp(2rem, 4vw, 4rem);
-}
-
-.stack-h-panel-wide {
-  width: 120vw;
-}
-
-.stack-h-panel-inner {
-  max-width: 1100px;
-  width: 100%;
-  margin: 0 auto;
+  margin-bottom: clamp(3rem, 6vw, 5rem);
 }
 
 /* Section Label */
@@ -406,25 +359,6 @@
 }
 
 @media (max-width: 768px) {
-  .stack-h-wrapper {
-    height: auto;
-  }
-
-  .stack-h-container {
-    position: static;
-    flex-direction: column;
-    width: 100%;
-    height: auto;
-    padding: 0 clamp(1.5rem, 4vw, 4rem);
-    gap: 0;
-  }
-
-  .stack-h-panel {
-    width: 100% !important;
-    height: auto;
-    padding-block: clamp(3rem, 8vw, 5rem);
-  }
-
   .expertise-grid {
     grid-template-columns: 1fr;
   }
