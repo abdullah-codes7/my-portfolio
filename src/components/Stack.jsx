@@ -138,6 +138,8 @@ function CategoryCard({ category, index, setCatRef, visible, mousePos }) {
 
 function Stack() {
   const [titleRef, titleVisible] = useScrollAnimation(0.2)
+  const [expertiseRef, expertiseVisible] = useScrollAnimation(0.1)
+  const [setExpertiseRef, visibleExpertise] = useStaggerAnimation(expertise.length, 0.1)
   const mousePos = useMouseParallax(0.015)
   const scrollContainerRef = useRef(null)
   const scrollWrapperRef = useRef(null)
@@ -147,34 +149,50 @@ function Stack() {
     const wrapper = scrollWrapperRef.current
     if (!container || !wrapper) return
 
-    let ctx
-    const timer = setTimeout(() => {
-      const scrollWidth = container.scrollWidth - window.innerWidth
-      if (scrollWidth <= 0) return
+    const mm = gsap.matchMedia()
 
-      wrapper.style.height = `${scrollWidth + window.innerHeight}px`
+    mm.add(
+      {
+        isDesktop: '(min-width: 769px) and (pointer: fine)',
+        reduceMotion: '(prefers-reduced-motion: reduce)',
+      },
+      (ctx) => {
+        if (!ctx.conditions.isDesktop || ctx.conditions.reduceMotion) return
 
-      ctx = gsap.to(container, {
-        x: -scrollWidth,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: wrapper,
-          start: 'top top',
-          end: () => `+=${scrollWidth}`,
-          scrub: 1,
-          invalidateOnRefresh: true,
-          onRefresh: () => {
-            const newWidth = container.scrollWidth - window.innerWidth
-            wrapper.style.height = `${newWidth + window.innerHeight}px`
+        const setWrapperHeight = () => {
+          const scrollWidth = container.scrollWidth - window.innerWidth
+          wrapper.style.height = `${scrollWidth + window.innerHeight}px`
+        }
+        setWrapperHeight()
+
+        const tween = gsap.to(container, {
+          x: () => -(container.scrollWidth - window.innerWidth),
+          ease: 'none',
+          scrollTrigger: {
+            trigger: wrapper,
+            start: 'top top',
+            end: () => `+=${container.scrollWidth - window.innerWidth}`,
+            scrub: 1,
+            invalidateOnRefresh: true,
+            onRefresh: setWrapperHeight,
           },
-        },
-      })
-    }, 200)
+        })
+
+        return () => {
+          tween.scrollTrigger && tween.scrollTrigger.kill()
+          tween.kill()
+        }
+      }
+    )
+
+    const refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 300)
+    const onLoad = () => ScrollTrigger.refresh()
+    window.addEventListener('load', onLoad)
 
     return () => {
-      clearTimeout(timer)
-      if (ctx && ctx.scrollTrigger) ctx.scrollTrigger.kill()
-      gsap.killTweensOf(container)
+      clearTimeout(refreshTimer)
+      window.removeEventListener('load', onLoad)
+      mm.revert()
     }
   }, [])
 
@@ -191,33 +209,34 @@ function Stack() {
           </div>
           <AnimatedTitle line1="Tech" line2="STACK" delay={0.1} />
         </div>
+
+        {/* Core Expertise — stays vertical */}
+        <div
+          ref={expertiseRef}
+          className={`expertise-bento anim-fade-up ${expertiseVisible ? 'visible' : ''}`}
+        >
+          <h3 className="stack-section-label">
+            <span className="label-line"></span>
+            Core Expertise
+            <span className="label-line"></span>
+          </h3>
+          <div className="expertise-grid">
+            {expertise.map((item, i) => (
+              <ExpertiseCard
+                key={item.name}
+                item={item}
+                index={i}
+                visible={visibleExpertise.has(i)}
+                setRef={setExpertiseRef}
+              />
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* Horizontal Scroll */}
+      {/* Horizontal Scroll — Toolbox + Proficiency */}
       <div className="stack-h-wrapper" ref={scrollWrapperRef}>
         <div className="stack-h-container" ref={scrollContainerRef}>
-
-          {/* Core Expertise */}
-          <div className="stack-h-panel">
-            <div className="stack-h-panel-inner">
-              <h3 className="stack-section-label">
-                <span className="label-line"></span>
-                Core Expertise
-                <span className="label-line"></span>
-              </h3>
-              <div className="expertise-grid">
-                {expertise.map((item, i) => (
-                  <ExpertiseCard
-                    key={item.name}
-                    item={item}
-                    index={i}
-                    visible={true}
-                    setRef={() => () => {}}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
 
           {/* Toolbox */}
           <div className="stack-h-panel">
