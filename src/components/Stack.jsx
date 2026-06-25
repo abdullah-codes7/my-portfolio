@@ -9,19 +9,6 @@ const expertise = [
   { name: 'TypeScript', level: 92, suffix: '%', years: '3+' },
 ]
 
-const technologies = [
-  { name: 'React / Next.js', level: 95 },
-  { name: 'Node.js / Express', level: 90 },
-  { name: 'TypeScript', level: 92 },
-  { name: 'Solidity', level: 88 },
-  { name: 'PostgreSQL / MongoDB', level: 85 },
-  { name: 'Python', level: 80 },
-  { name: 'Tailwind CSS', level: 90 },
-  { name: 'Docker', level: 75 },
-  { name: 'AWS / Vercel', level: 78 },
-  { name: 'Git / CI/CD', level: 85 },
-]
-
 const categories = [
   {
     title: 'Frontend',
@@ -136,7 +123,6 @@ function Stack() {
   const [expertiseRef, expertiseVisible] = useScrollAnimation(0.1)
   const [setExpertiseRef, visibleExpertise] = useStaggerAnimation(expertise.length, 0.1)
   const [setCatRef, visibleCats] = useStaggerAnimation(categories.length, 0.1)
-  const [skillsRef, skillsVisible] = useScrollAnimation(0.1)
   const mousePos = useMouseParallax(0.015)
 
   return (
@@ -192,38 +178,7 @@ function Stack() {
                 setCatRef={setCatRef}
                 visible={visibleCats.has(index)}
                 mousePos={mousePos}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Full Proficiency */}
-        <div
-          ref={skillsRef}
-          className={`skills-section anim-blur-in ${skillsVisible ? 'visible' : ''}`}
-        >
-          <h3 className="stack-section-label">
-            <span className="label-line"></span>
-            Proficiency
-            <span className="label-line"></span>
-          </h3>
-          <div className="skills-grid">
-            {technologies.map((tech, i) => (
-              <div key={tech.name} className="skill-item">
-                <div className="skill-header">
-                  <span className="skill-name">{tech.name}</span>
-                  <span className="skill-level">{tech.level}%</span>
-                </div>
-                <div className="skill-bar">
-                  <div
-                    className="skill-progress"
-                    style={{
-                      width: skillsVisible ? `${tech.level}%` : '0%',
-                      transitionDelay: `${i * 0.06}s`,
-                    }}
-                  ></div>
-                </div>
-              </div>
+               />
             ))}
           </div>
         </div>
