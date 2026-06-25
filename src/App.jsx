@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Lenis from 'lenis'
 import Loading from './components/Loading'
@@ -13,17 +13,22 @@ import ContactPage from './pages/ContactPage'
 import SplashCursor from './components/SplashCursor'
 import './App.css'
 
-function ScrollToTop() {
+function ScrollToTop({ lenisRef }) {
   const { pathname } = useLocation()
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [pathname])
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true })
+    } else {
+      window.scrollTo(0, 0)
+    }
+  }, [pathname, lenisRef])
   return null
 }
 
 function AppContent() {
   const [scrollProgress, setScrollProgress] = useState(0)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const lenisRef = useRef(null)
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -36,6 +41,14 @@ function AppContent() {
       smoothTouch: false,
       touchMultiplier: 2,
       infinite: false,
+    })
+
+    lenisRef.current = lenis
+
+    lenis.on('scroll', (e) => {
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight
+      const progress = docHeight > 0 ? Math.min(e.scroll / docHeight, 1) : 0
+      setScrollProgress(progress)
     })
 
     function raf(time) {
@@ -57,21 +70,12 @@ function AppContent() {
     })
   }, [])
 
-  const handleScroll = useCallback(() => {
-    const currentScrollY = window.scrollY
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight
-    const progress = docHeight > 0 ? Math.min(currentScrollY / docHeight, 1) : 0
-    setScrollProgress(progress)
-  }, [])
-
   useEffect(() => {
     window.addEventListener('mousemove', handleMouseMove)
-    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
-      window.removeEventListener('scroll', handleScroll)
     }
-  }, [handleMouseMove, handleScroll])
+  }, [handleMouseMove])
 
   return (
     <>
@@ -95,7 +99,7 @@ function AppContent() {
         style={{ transform: `scaleX(${scrollProgress})` }}
       ></div>
 
-      <ScrollToTop />
+      <ScrollToTop lenisRef={lenisRef} />
       <Navbar />
       <PageTransition>
         <main>
