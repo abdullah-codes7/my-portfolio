@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useScrollAnimation, useStaggerAnimation, useCountUp, useTilt, useMagnetic } from '../hooks/useScrollAnimation'
 import AnimatedTitle from './AnimatedTitle'
-import { ParticleCard, GlobalSpotlight } from './MagicBento'
 import './About.css'
 
 function parseStat(value) {
@@ -23,11 +22,46 @@ function About() {
   const [ctaRef, ctaVisible] = useScrollAnimation(0.1)
   const [time, setTime] = useState(new Date())
   const magneticRef = useMagnetic(0.3)
-  const gridRef = useRef(null)
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000)
     return () => clearInterval(timer)
+  }, [])
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const cards = document.querySelectorAll('.about-bento-card')
+      cards.forEach(card => {
+        const rect = card.getBoundingClientRect()
+        const x = ((e.clientX - rect.left) / rect.width) * 100
+        const y = ((e.clientY - rect.top) / rect.height) * 100
+        const centerX = rect.width / 2
+        const centerY = rect.height / 2
+        const distX = e.clientX - rect.left
+        const distY = e.clientY - rect.top
+        const distance = Math.sqrt(Math.pow(distX - centerX, 2) + Math.pow(distY - centerY, 2))
+        const maxDist = Math.sqrt(Math.pow(centerX, 2) + Math.pow(centerY, 2))
+        const intensity = Math.max(0, 1 - distance / maxDist)
+
+        card.style.setProperty('--glow-x', `${x}%`)
+        card.style.setProperty('--glow-y', `${y}%`)
+        card.style.setProperty('--glow-intensity', intensity.toString())
+      })
+    }
+
+    const handleMouseLeave = () => {
+      const cards = document.querySelectorAll('.about-bento-card')
+      cards.forEach(card => {
+        card.style.setProperty('--glow-intensity', '0')
+      })
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mouseleave', handleMouseLeave)
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('mouseleave', handleMouseLeave)
+    }
   }, [])
 
   const stats = [
@@ -116,37 +150,27 @@ function About() {
         </div>
 
         {/* Bento Grid */}
-        <div ref={(el) => { bentoRef(el); gridRef.current = el; }} className="about-bento">
-          <GlobalSpotlight
-            gridRef={gridRef}
-            enabled={true}
-            spotlightRadius={300}
-            glowColor="255, 255, 255"
-          />
+        <div ref={bentoRef} className="about-bento">
           {/* Stat Cards */}
           {stats.map((stat, i) => {
             const { target, suffix } = parseStat(stat.number)
             return (
-              <ParticleCard
+              <div
                 key={i}
                 ref={setBentoRef(i)}
-                className={`about-bento-card about-stat-card mb-bento-card anim-scale-in ${visibleBento.has(i) ? 'visible' : ''}`}
+                className={`about-bento-card about-stat-card magic-bento-card anim-scale-in ${visibleBento.has(i) ? 'visible' : ''}`}
                 style={{ transitionDelay: `${i * 0.1}s` }}
-                particleCount={6}
-                glowColor="255, 255, 255"
               >
                 <BentoStat stat={stat} target={target} suffix={suffix} visible={visibleBento.has(i)} />
-              </ParticleCard>
+              </div>
             )
           })}
 
           {/* Tech Stack Card */}
-          <ParticleCard
+          <div
             ref={setBentoRef(3)}
-            className={`about-bento-card about-tech-card mb-bento-card anim-scale-in ${visibleBento.has(3) ? 'visible' : ''}`}
+            className={`about-bento-card about-tech-card magic-bento-card anim-scale-in ${visibleBento.has(3) ? 'visible' : ''}`}
             style={{ transitionDelay: '0.3s' }}
-            particleCount={6}
-            glowColor="255, 255, 255"
           >
             <h4 className="bento-card-title">Tech Stack</h4>
             <div className="tech-pills">
@@ -154,15 +178,13 @@ function About() {
                 <span key={tech} className="tech-pill">{tech}</span>
               ))}
             </div>
-          </ParticleCard>
+          </div>
 
           {/* Location Card */}
-          <ParticleCard
+          <div
             ref={setBentoRef(4)}
-            className={`about-bento-card about-location-card mb-bento-card anim-scale-in ${visibleBento.has(4) ? 'visible' : ''}`}
+            className={`about-bento-card about-location-card magic-bento-card anim-scale-in ${visibleBento.has(4) ? 'visible' : ''}`}
             style={{ transitionDelay: '0.4s' }}
-            particleCount={6}
-            glowColor="255, 255, 255"
           >
             <h4 className="bento-card-title">Location</h4>
             <p className="bento-card-value">Available Worldwide</p>
@@ -170,7 +192,7 @@ function About() {
               <span className="status-dot"></span>
               <span>Remote & On-site</span>
             </div>
-          </ParticleCard>
+          </div>
         </div>
 
         {/* View More CTA */}
