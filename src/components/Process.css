@@ -171,7 +171,7 @@
   background: rgba(255, 255, 255, 0.6);
   border-color: rgba(255, 255, 255, 0.3);
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
-  animation: dotPulse 2s ease-in-out infinite;
+  animation: processDotPulse 2s ease-in-out infinite;
 }
 
 .process-block.visible .process-step-dot-ring {
@@ -191,7 +191,7 @@
   transform: scale(1.6);
 }
 
-@keyframes dotPulse {
+@keyframes processDotPulse {
   0%, 100% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.15); }
   50% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.25); }
 }
@@ -233,25 +233,6 @@
 
 .process-card:hover::after {
   opacity: 1;
-}
-
-/* Tilt glare */
-.tilt-glare {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    105deg,
-    transparent 40%,
-    rgba(255, 255, 255, 0.03) 45%,
-    rgba(255, 255, 255, 0.06) 50%,
-    rgba(255, 255, 255, 0.03) 55%,
-    transparent 60%
-  );
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  pointer-events: none;
-  z-index: 3;
 }
 
 .process-card:hover .tilt-glare {

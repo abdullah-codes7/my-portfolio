@@ -33,12 +33,6 @@
   margin-bottom: 1.5rem;
 }
 
-.label-line {
-  width: 32px;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.2);
-}
-
 .section-title {
   font-family: var(--font-futuristic);
   font-size: clamp(2.5rem, 5vw, 4rem);

@@ -120,7 +120,7 @@
   font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 900;
   letter-spacing: -0.02em;
-  color: white;
+  color: var(--text-primary);
   line-height: 1.1;
   margin-bottom: 0.5rem;
 }
@@ -225,8 +225,8 @@
 }
 
 .pd-btn-primary {
-  background: white;
-  color: black;
+  background: var(--text-primary);
+  color: var(--bg-primary);
 }
 
 .pd-btn-primary:hover {
@@ -242,7 +242,7 @@
 
 .pd-btn-secondary:hover {
   border-color: var(--border-hover);
-  color: white;
+  color: var(--text-primary);
 }
 
 /* Not Found */

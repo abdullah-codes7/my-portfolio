@@ -111,8 +111,8 @@ function Footer() {
             <h4 className="footer-col-title">Connect</h4>
             <nav className="footer-nav">
               <a href="https://github.com/valtrix7" target="_blank" rel="noopener noreferrer" className="footer-nav-link">GitHub</a>
-              <a href="#" className="footer-nav-link">LinkedIn</a>
-              <a href="#" className="footer-nav-link">Twitter</a>
+              <a href="https://linkedin.com/in/valtrix" target="_blank" rel="noopener noreferrer" className="footer-nav-link">LinkedIn</a>
+              <a href="https://twitter.com/valtrix7" target="_blank" rel="noopener noreferrer" className="footer-nav-link">Twitter</a>
               <a href="mailto:hello@valtrix.dev" className="footer-nav-link">Email</a>
             </nav>
           </div>

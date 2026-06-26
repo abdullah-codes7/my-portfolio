@@ -95,10 +95,6 @@ function AppContent() {
         COLOR="#ffffff"
       />
       <a href="#about" className="skip-link">Skip to content</a>
-      <div
-        className="scroll-progress"
-        style={{ transform: `scaleX(${scrollProgress})` }}
-      ></div>
 
       <ScrollToTop lenisRef={lenisRef} />
       <Navbar />
