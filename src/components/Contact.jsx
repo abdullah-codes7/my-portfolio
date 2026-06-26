@@ -21,6 +21,8 @@ function Contact() {
   const [charIndex, setCharIndex] = useState(0)
   const [isDeleting, setIsDeleting] = useState(false)
   const [time, setTime] = useState(new Date())
+  const [focusedField, setFocusedField] = useState(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const [formData, setFormData] = useState({ name: '', email: '', message: '' })
   const [errors, setErrors] = useState({})
@@ -55,13 +57,13 @@ function Contact() {
 
   const validate = () => {
     const newErrors = {}
-    if (!formData.name.trim()) newErrors.name = 'Name is required'
+    if (!formData.name.trim()) newErrors.name = 'Required'
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required'
+      newErrors.email = 'Required'
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Invalid email format'
+      newErrors.email = 'Invalid'
     }
-    if (!formData.message.trim()) newErrors.message = 'Message is required'
+    if (!formData.message.trim()) newErrors.message = 'Required'
     return newErrors
   }
 
@@ -71,13 +73,17 @@ function Contact() {
     if (errors[name]) setErrors({ ...errors, [name]: '' })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const newErrors = validate()
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
       return
     }
+    setIsSubmitting(true)
+    await new Promise(r => setTimeout(r, 1500))
+    setIsSubmitting(false)
+    setFormData({ name: '', email: '', message: '' })
   }
 
   const formatTime = (date) => {
@@ -103,14 +109,24 @@ function Contact() {
           <AnimatedTitle line1="Get In" line2="TOUCH" delay={0.1} />
         </div>
 
+        {/* Statement */}
+        <div className={`contact-statement anim-fade-up ${titleVisible ? 'visible' : ''}`}>
+          <span className="statement-line"></span>
+          <p className="statement-text">
+            Have a project in mind? Let's build something <span className="statement-accent">extraordinary</span> together.
+          </p>
+          <span className="statement-line"></span>
+        </div>
+
         {/* Main Grid */}
-        <div className="contact-main-grid">
+        <div
+          ref={gridRef}
+          className={`contact-main-grid anim-fade-up ${gridVisible ? 'visible' : ''}`}
+        >
 
           {/* Left: Terminal + Social */}
-          <div
-            ref={gridRef}
-            className={`contact-left anim-fade-up ${gridVisible ? 'visible' : ''}`}
-          >
+          <div className="contact-left">
+
             {/* Terminal */}
             <div className="contact-terminal">
               <div className="ct-terminal-header">
@@ -168,103 +184,113 @@ function Contact() {
           {/* Right: Form */}
           <div
             ref={formRef}
-            className={`contact-form-wrap anim-fade-up ${formVisible ? 'visible' : ''}`}
-            style={{ transitionDelay: '0.15s' }}
+            className={`contact-form-wrap ${formVisible ? 'visible' : ''}`}
           >
-            <form className="compose-form" onSubmit={handleSubmit} noValidate>
-              <div className="compose-header">
-                <div className="compose-dots">
-                  <span className="compose-dot close"></span>
-                  <span className="compose-dot min"></span>
-                  <span className="compose-dot max"></span>
-                </div>
-                <span className="compose-title">compose.msg</span>
-                <span className="compose-status">
-                  <span className="status-indicator"></span>
-                  Ready
-                </span>
-              </div>
+            <form className="msg-form" onSubmit={handleSubmit} noValidate>
 
-              <div className="compose-fields">
-                <div className={`compose-field ${errors.name ? 'error' : ''}`}>
-                  <label className="compose-label" htmlFor="c-name">
-                    <span className="label-prefix">$</span>
-                    <span className="label-name">to</span>
-                    <span className="label-syntax">:</span>
-                  </label>
+              {/* Field 01 — Name */}
+              <div className={`msg-field ${focusedField === 'name' ? 'focused' : ''} ${errors.name ? 'error' : ''} ${formData.name ? 'filled' : ''}`}>
+                <div className="msg-field-head">
+                  <span className="msg-num">01</span>
+                  <label className="msg-label" htmlFor="c-name">Name</label>
+                </div>
+                <div className="msg-input-wrap">
                   <input
                     id="c-name"
                     type="text"
                     name="name"
-                    className="compose-input"
-                    placeholder="Full Name"
+                    className="msg-input"
+                    placeholder="Your full name"
                     value={formData.name}
                     onChange={handleChange}
+                    onFocus={() => setFocusedField('name')}
+                    onBlur={() => setFocusedField(null)}
                     autoComplete="name"
                   />
-                  {errors.name && <span className="compose-error">{errors.name}</span>}
+                  <div className="msg-accent-line"></div>
                 </div>
+                {errors.name && <span className="msg-error">{errors.name}</span>}
+              </div>
 
-                <div className={`compose-field ${errors.email ? 'error' : ''}`}>
-                  <label className="compose-label" htmlFor="c-email">
-                    <span className="label-prefix">$</span>
-                    <span className="label-name">email</span>
-                    <span className="label-syntax">:</span>
-                  </label>
+              {/* Field 02 — Email */}
+              <div className={`msg-field ${focusedField === 'email' ? 'focused' : ''} ${errors.email ? 'error' : ''} ${formData.email ? 'filled' : ''}`}>
+                <div className="msg-field-head">
+                  <span className="msg-num">02</span>
+                  <label className="msg-label" htmlFor="c-email">Email</label>
+                </div>
+                <div className="msg-input-wrap">
                   <input
                     id="c-email"
                     type="email"
                     name="email"
-                    className="compose-input"
+                    className="msg-input"
                     placeholder="you@domain.com"
                     value={formData.email}
                     onChange={handleChange}
+                    onFocus={() => setFocusedField('email')}
+                    onBlur={() => setFocusedField(null)}
                     autoComplete="email"
                   />
-                  {errors.email && <span className="compose-error">{errors.email}</span>}
+                  <div className="msg-accent-line"></div>
                 </div>
+                {errors.email && <span className="msg-error">{errors.email}</span>}
+              </div>
 
-                <div className={`compose-field ${errors.message ? 'error' : ''}`}>
-                  <label className="compose-label" htmlFor="c-message">
-                    <span className="label-prefix">$</span>
-                    <span className="label-name">body</span>
-                    <span className="label-syntax">:</span>
-                  </label>
-                  <div className="compose-textarea-wrap">
-                    <textarea
-                      id="c-message"
-                      name="message"
-                      className="compose-textarea"
-                      rows="6"
-                      placeholder="Message body..."
-                      value={formData.message}
-                      onChange={handleChange}
-                    ></textarea>
-                    <div className="compose-char-count">
-                      <span className="char-current">{formData.message.length}</span>
-                      <span className="char-separator">/</span>
-                      <span className="char-max">5000</span>
-                    </div>
-                  </div>
-                  {errors.message && <span className="compose-error">{errors.message}</span>}
+              {/* Field 03 — Message */}
+              <div className={`msg-field ${focusedField === 'message' ? 'focused' : ''} ${errors.message ? 'error' : ''} ${formData.message ? 'filled' : ''}`}>
+                <div className="msg-field-head">
+                  <span className="msg-num">03</span>
+                  <label className="msg-label" htmlFor="c-message">Message</label>
+                </div>
+                <div className="msg-input-wrap">
+                  <textarea
+                    id="c-message"
+                    name="message"
+                    className="msg-input msg-textarea"
+                    rows="5"
+                    placeholder="Tell me about your project, timeline, and goals..."
+                    value={formData.message}
+                    onChange={handleChange}
+                    onFocus={() => setFocusedField('message')}
+                    onBlur={() => setFocusedField(null)}
+                  ></textarea>
+                  <div className="msg-accent-line"></div>
+                </div>
+                <div className="msg-field-foot">
+                  {errors.message && <span className="msg-error">{errors.message}</span>}
+                  <span className="msg-char-count">
+                    {formData.message.length > 0 && (
+                      <span className="msg-chars">{formData.message.length} chars</span>
+                    )}
+                  </span>
                 </div>
               </div>
 
-              <div className="compose-footer">
-                <div className="compose-hints">
-                  <span className="hint">Tab</span> to navigate
-                  <span className="hint-sep">·</span>
-                  <span className="hint">Enter</span> to send
+              {/* Submit */}
+              <div className="msg-submit-row">
+                <div className="msg-submit-hints">
+                  <span className="msg-hint">Tab</span>
+                  <span className="msg-hint-sep">·</span>
+                  <span className="msg-hint">Enter</span>
                 </div>
-                <button ref={submitRef} type="submit" className="compose-send" disabled={!formData.name || !formData.email || !formData.message}>
-                  <span className="send-text">Send</span>
-                  <span className="send-animation">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                <button
+                  ref={submitRef}
+                  type="submit"
+                  className={`msg-send ${isSubmitting ? 'submitting' : ''}`}
+                  disabled={isSubmitting || !formData.name || !formData.email || !formData.message}
+                >
+                  <span className="msg-send-text">
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
+                  </span>
+                  <span className="msg-send-arrow">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>
                   </span>
+                  {isSubmitting && <span className="msg-send-spinner"></span>}
                 </button>
               </div>
+
             </form>
           </div>
 

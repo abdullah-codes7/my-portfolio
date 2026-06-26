@@ -21,7 +21,46 @@
 }
 
 .contact-hero {
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+/* Statement — editorial line between hero and form */
+.contact-statement {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2vw, 2rem);
   margin-bottom: clamp(3rem, 6vw, 5rem);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: 0.3s;
+}
+
+.contact-statement.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.statement-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+}
+
+.statement-text {
+  font-family: var(--font-body);
+  font-size: clamp(0.9375rem, 1.2vw, 1.125rem);
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  text-align: center;
+  max-width: 480px;
+  flex-shrink: 0;
+}
+
+.statement-accent {
+  color: var(--text-primary);
+  font-weight: 500;
 }
 
 /* Main Grid */
@@ -233,331 +272,322 @@
   transform: translate(0, 0);
 }
 
-/* Compose Form — distinct terminal-style message composer */
+/* ─────────────────────────────────────────
+   Message Form — premium numbered fields
+   ───────────────────────────────────────── */
 .contact-form-wrap {
-  background: rgba(255, 255, 255, 0.015);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  overflow: hidden;
-  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.contact-form-wrap::before {
+.contact-form-wrap.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.msg-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Individual field */
+.msg-field {
+  position: relative;
+  padding: 1.75rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.msg-field:last-of-type {
+  border-bottom: none;
+}
+
+/* Hover / Focus glow */
+.msg-field::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 50%);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.01);
+  opacity: 0;
+  transition: opacity 0.5s ease;
   pointer-events: none;
 }
 
-.contact-form-wrap:hover {
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255,255,255,0.05) inset;
+.msg-field:hover::before,
+.msg-field.focused::before {
+  opacity: 1;
 }
 
-.compose-form {
+/* Field head — number + label */
+.msg-field-head {
   display: flex;
-  flex-direction: column;
-}
-
-/* Header bar */
-.compose-header {
-  display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 0.75rem;
-  padding: 0.875rem 1.25rem;
-  background: rgba(255, 255, 255, 0.03);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 0.625rem;
+  position: relative;
+  z-index: 1;
 }
 
-.compose-dots {
-  display: flex;
-  gap: 6px;
-}
-
-.compose-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.12);
-  transition: all 0.3s ease;
-}
-
-.compose-form:hover .compose-dot.close { background: #ff5f57; }
-.compose-form:hover .compose-dot.min { background: #febc2e; }
-.compose-form:hover .compose-dot.max { background: #28c840; }
-
-.compose-title {
+.msg-num {
   font-family: var(--font-futuristic);
-  font-size: 0.7rem;
-  color: var(--text-tertiary);
-  letter-spacing: 0.08em;
-  flex: 1;
-}
-
-.compose-status {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-body);
-  font-size: 0.7rem;
-  color: var(--text-tertiary);
-  letter-spacing: 0.02em;
-}
-
-.status-indicator {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #22c55e;
-  animation: pulse-status 2s ease-in-out infinite;
-}
-
-@keyframes pulse-status {
-  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
-  50% { opacity: 0.6; box-shadow: 0 0 0 4px rgba(34, 197, 94, 0); }
-}
-
-/* Fields */
-.compose-fields {
-  padding: 1.25rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.compose-field {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  padding: 0.75rem 0.875rem;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid transparent;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.compose-field:hover {
-  background: rgba(255, 255, 255, 0.035);
-  border-color: rgba(255, 255, 255, 0.04);
-}
-
-.compose-field:focus-within {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-}
-
-.compose-field.error {
-  border-color: rgba(255, 120, 120, 0.3);
-  background: rgba(255, 100, 100, 0.03);
-}
-
-.compose-label {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  font-family: var(--font-futuristic);
-  font-size: 0.75rem;
-  color: var(--text-tertiary);
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-  padding-top: 0.15rem;
-  user-select: none;
-}
-
-.label-prefix {
+  font-size: 0.625rem;
+  font-weight: 500;
   color: rgba(255, 255, 255, 0.15);
-  margin-right: 0.25rem;
+  letter-spacing: 0.1em;
+  transition: color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.label-name {
-  color: var(--text-secondary);
+.msg-field.focused .msg-num {
+  color: rgba(255, 255, 255, 0.5);
 }
 
-.label-syntax {
-  color: rgba(255, 255, 255, 0.2);
-  margin-left: 0.15rem;
+.msg-label {
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  letter-spacing: 0.01em;
+  transition: color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: text;
 }
 
-.compose-field:focus-within .label-name {
+.msg-field.focused .msg-label {
   color: var(--text-primary);
 }
 
-.compose-input {
-  flex: 1;
+.msg-field.filled .msg-label {
+  color: var(--text-secondary);
+}
+
+/* Input wrapper */
+.msg-input-wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.msg-input {
+  width: 100%;
   font-family: var(--font-body);
-  font-size: 0.9375rem;
+  font-size: clamp(1.125rem, 1.5vw, 1.375rem);
   font-weight: 400;
   color: var(--text-primary);
   background: transparent;
   border: none;
   outline: none;
   line-height: 1.5;
+  padding: 0.25rem 0;
+  transition: color 0.3s ease;
 }
 
-.compose-input::placeholder {
-  color: rgba(255, 255, 255, 0.12);
-  font-style: italic;
+.msg-input::placeholder {
+  color: rgba(255, 255, 255, 0.1);
+  font-weight: 300;
 }
 
-/* Textarea */
-.compose-textarea-wrap {
-  flex: 1;
-  position: relative;
-}
-
-.compose-textarea {
-  width: 100%;
-  font-family: var(--font-body);
-  font-size: 0.9375rem;
-  font-weight: 400;
-  color: var(--text-primary);
-  background: transparent;
-  border: none;
-  outline: none;
+.msg-textarea {
   resize: none;
-  line-height: 1.6;
   min-height: 120px;
+  line-height: 1.7;
 }
 
-.compose-textarea::placeholder {
-  color: rgba(255, 255, 255, 0.12);
-  font-style: italic;
-}
-
-.compose-char-count {
+/* Animated accent line */
+.msg-accent-line {
   position: absolute;
   bottom: 0;
+  left: 0;
   right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.6), rgba(255,255,255,0.2));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 1px;
+}
+
+.msg-field.focused .msg-accent-line {
+  transform: scaleX(1);
+}
+
+/* Error state */
+.msg-field.error .msg-accent-line {
+  background: linear-gradient(90deg, rgba(255, 120, 120, 0.8), rgba(255, 120, 120, 0.3));
+  transform: scaleX(1);
+}
+
+.msg-error {
+  display: block;
   font-family: var(--font-futuristic);
   font-size: 0.625rem;
-  color: rgba(255, 255, 255, 0.15);
-  letter-spacing: 0.05em;
-}
-
-.char-current {
-  color: rgba(255, 255, 255, 0.3);
-}
-
-.char-separator {
-  margin: 0 0.1rem;
-}
-
-.compose-error {
-  display: block;
-  font-size: 0.7rem;
+  font-weight: 500;
   color: rgba(255, 120, 120, 0.8);
-  margin-top: 0.4rem;
-  font-family: var(--font-body);
-  padding-left: 0;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 0.5rem;
+  position: relative;
+  z-index: 1;
 }
 
-/* Footer */
-.compose-footer {
+/* Field footer — char count */
+.msg-field-foot {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 1.25rem;
-  background: rgba(255, 255, 255, 0.02);
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  margin-top: 0.375rem;
+  position: relative;
+  z-index: 1;
 }
 
-.compose-hints {
-  font-family: var(--font-body);
-  font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.2);
+.msg-char-count {
+  margin-left: auto;
+}
+
+.msg-chars {
+  font-family: var(--font-futuristic);
+  font-size: 0.5625rem;
+  color: rgba(255, 255, 255, 0.15);
+  letter-spacing: 0.06em;
+  transition: color 0.3s ease;
+}
+
+.msg-field.focused .msg-chars {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* ─────────────────────────────────────────
+   Submit Row
+   ───────────────────────────────────────── */
+.msg-submit-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 2rem;
+}
+
+.msg-submit-hints {
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  flex-wrap: wrap;
 }
 
-.hint {
-  display: inline-block;
-  padding: 0.15rem 0.4rem;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  font-family: var(--font-futuristic);
-  font-size: 0.6rem;
-  color: rgba(255, 255, 255, 0.3);
-  letter-spacing: 0.04em;
-}
-
-.hint-sep {
-  margin: 0 0.2rem;
-  color: rgba(255, 255, 255, 0.1);
-}
-
-.compose-send {
+.msg-hint {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.625rem 1.5rem;
+  justify-content: center;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  font-family: var(--font-futuristic);
+  font-size: 0.5625rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.25);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.msg-hint-sep {
+  margin: 0 0.15rem;
+  color: rgba(255, 255, 255, 0.1);
+  font-size: 0.5rem;
+}
+
+/* Send button */
+.msg-send {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 2rem 0.875rem 2.25rem;
   font-family: var(--font-body);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--bg-primary);
   background: var(--text-primary);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-pill);
   cursor: pointer;
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
 }
 
-.compose-send::before {
+/* Shine sweep */
+.msg-send::before {
   content: '';
   position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.2) 50%, transparent 60%);
-  transform: translateX(-100%);
-  transition: transform 0.6s ease;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  transition: left 0.7s ease;
 }
 
-.compose-send:hover::before {
-  transform: translateX(100%);
+.msg-send:hover::before {
+  left: 100%;
 }
 
-.compose-send:hover {
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 8px 30px rgba(255, 255, 255, 0.15);
+.msg-send:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 12px 40px rgba(255, 255, 255, 0.15), 0 0 0 1px rgba(255,255,255,0.1) inset;
 }
 
-.compose-send:active {
+.msg-send:active {
   transform: translateY(0) scale(0.97);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.08);
 }
 
-.compose-send:disabled {
-  opacity: 0.3;
+.msg-send:disabled {
+  opacity: 0.25;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
 }
 
-.compose-send:disabled::before {
+.msg-send:disabled::before {
   display: none;
 }
 
-.send-text {
+.msg-send-text {
   position: relative;
   z-index: 1;
 }
 
-.send-animation {
+.msg-send-arrow {
   display: flex;
   align-items: center;
+  position: relative;
+  z-index: 1;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.compose-send:hover .send-animation {
-  transform: translate(2px, -2px);
+.msg-send:hover .msg-send-arrow {
+  transform: translateX(4px);
 }
 
-/* Responsive */
+/* Spinner */
+.msg-send-spinner {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-top-color: rgba(0, 0, 0, 0.4);
+  animation: send-spin 0.7s linear infinite;
+}
+
+@keyframes send-spin {
+  to { transform: rotate(360deg); }
+}
+
+.msg-send.submitting .msg-send-arrow {
+  display: none;
+}
+
+/* ─────────────────────────────────────────
+   Responsive
+   ───────────────────────────────────────── */
 @media (max-width: 1024px) {
   .contact-main-grid {
     grid-template-columns: 1fr;
@@ -567,5 +597,33 @@
 @media (max-width: 768px) {
   .contact-social-bento {
     grid-template-columns: 1fr;
+  }
+
+  .msg-field {
+    padding: 1.25rem 0;
+  }
+
+  .msg-input {
+    font-size: 1.125rem;
+  }
+
+  .msg-submit-row {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .msg-send {
+    align-self: stretch;
+    justify-content: center;
+  }
+
+  .contact-statement {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .statement-line {
+    display: none;
   }
 }
