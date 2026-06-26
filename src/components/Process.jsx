@@ -1,4 +1,4 @@
-import { useRef, useCallback, useEffect, useState } from 'react'
+import { useRef, useCallback } from 'react'
 import { useScrollAnimation, useStaggerAnimation, useTilt, useParallax } from '../hooks/useScrollAnimation'
 import AnimatedTitle from './AnimatedTitle'
 import BorderGlow from './BorderGlow'
@@ -106,24 +106,10 @@ function ProcessBlock({ step, index, setRef, visible }) {
 function Process() {
   const [titleRef, titleVisible] = useScrollAnimation(0.2)
   const [setRef, stepsVisible] = useStaggerAnimation(steps.length, 0.15)
-  const progressRef = useRef(null)
-  const [progress, setProgress] = useState(0)
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!progressRef.current) return
-      const rect = progressRef.current.getBoundingClientRect()
-      const vh = window.innerHeight
-      const start = vh * 0.7
-      const end = -rect.height + vh * 0.3
-      const raw = 1 - (rect.top - end) / (start - end)
-      setProgress(Math.min(Math.max(raw, 0), 1))
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  // Progress driven by visible steps
+  const visibleCount = stepsVisible.size
+  const progress = visibleCount / steps.length
 
   return (
     <section className="process" id="process">
@@ -145,7 +131,7 @@ function Process() {
         </div>
 
         {/* Steps */}
-        <div className="process-steps" ref={progressRef}>
+        <div className="process-steps">
 
           {/* Progress bar between dots */}
           <div className="process-progress-track">
