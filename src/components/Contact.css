@@ -277,6 +277,10 @@
    ───────────────────────────────────────── */
 .contact-form-wrap {
   position: relative;
+  padding: 1.5rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   opacity: 0;
   transform: translateY(20px);
   transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
@@ -290,35 +294,34 @@
 .msg-form {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 0.75rem;
 }
 
 /* Individual field */
 .msg-field {
   position: relative;
-  padding: 1.75rem 0;
+  padding: 1.75rem 1.25rem;
+  margin: 0 -1.25rem;
+  border-radius: 12px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid transparent;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.msg-field:hover {
+  background: rgba(255, 255, 255, 0.035);
+  border-color: rgba(255, 255, 255, 0.04);
+}
+
+.msg-field.focused {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
 }
 
 .msg-field:last-of-type {
-  border-bottom: none;
-}
-
-/* Hover / Focus glow */
-.msg-field::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.01);
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  pointer-events: none;
-}
-
-.msg-field:hover::before,
-.msg-field.focused::before {
-  opacity: 1;
+  border-bottom: 1px solid transparent;
 }
 
 /* Field head — number + label */
@@ -463,7 +466,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 2rem;
+  padding: 1.25rem 1.5rem;
+  margin-top: 0.5rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .msg-submit-hints {

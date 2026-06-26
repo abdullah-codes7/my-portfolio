@@ -61,6 +61,8 @@ function ContactPage() {
     name: '', email: '', subject: '', message: ''
   })
   const [errors, setErrors] = useState({})
+  const [focusedField, setFocusedField] = useState(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -87,13 +89,17 @@ function ContactPage() {
     if (errors[name]) setErrors({ ...errors, [name]: '' })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const newErrors = validate()
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
       return
     }
+    setIsSubmitting(true)
+    await new Promise(r => setTimeout(r, 1500))
+    setIsSubmitting(false)
+    setFormData({ name: '', email: '', subject: '', message: '' })
   }
 
   const formatTime = (date) => {
@@ -173,80 +179,129 @@ timeZone: 'Asia/Karachi',
               <h3 className="cp-form-title">Send a Message</h3>
               <p className="cp-form-sub">I'll get back to you within 24 hours</p>
             </div>
-            <form className="cp-form" onSubmit={handleSubmit} noValidate>
-              <div className="cp-form-row">
-                <div className={`form-shell ${errors.name ? 'error' : ''}`}>
-                  <div className="form-core">
-                    <label className="form-label" htmlFor="cp-name">Name</label>
-                    <input
-                      id="cp-name"
-                      type="text"
-                      name="name"
-                      className="form-input"
-                      placeholder="John Doe"
-                      value={formData.name}
-                      onChange={handleChange}
-                    />
-                    {errors.name && <span className="form-error">{errors.name}</span>}
-                  </div>
+            <form className="cp-msg-form" onSubmit={handleSubmit} noValidate>
+
+              <div className={`cp-msg-field ${focusedField === 'name' ? 'focused' : ''} ${errors.name ? 'error' : ''} ${formData.name ? 'filled' : ''}`}>
+                <div className="cp-msg-field-head">
+                  <span className="cp-msg-num">01</span>
+                  <label className="cp-msg-label" htmlFor="cp-name">Name</label>
                 </div>
-                <div className={`form-shell ${errors.email ? 'error' : ''}`}>
-                  <div className="form-core">
-                    <label className="form-label" htmlFor="cp-email">Email</label>
-                    <input
-                      id="cp-email"
-                      type="email"
-                      name="email"
-                      className="form-input"
-                      placeholder="john@example.com"
-                      value={formData.email}
-                      onChange={handleChange}
-                    />
-                    {errors.email && <span className="form-error">{errors.email}</span>}
-                  </div>
+                <div className="cp-msg-input-wrap">
+                  <input
+                    id="cp-name"
+                    type="text"
+                    name="name"
+                    className="cp-msg-input"
+                    placeholder="Your full name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    onFocus={() => setFocusedField('name')}
+                    onBlur={() => setFocusedField(null)}
+                    autoComplete="name"
+                  />
+                  <div className="cp-msg-accent-line"></div>
                 </div>
+                {errors.name && <span className="cp-msg-error">{errors.name}</span>}
               </div>
 
-              <div className={`form-shell ${errors.subject ? 'error' : ''}`}>
-                <div className="form-core">
-                  <label className="form-label" htmlFor="cp-subject">Subject</label>
+              <div className={`cp-msg-field ${focusedField === 'email' ? 'focused' : ''} ${errors.email ? 'error' : ''} ${formData.email ? 'filled' : ''}`}>
+                <div className="cp-msg-field-head">
+                  <span className="cp-msg-num">02</span>
+                  <label className="cp-msg-label" htmlFor="cp-email">Email</label>
+                </div>
+                <div className="cp-msg-input-wrap">
+                  <input
+                    id="cp-email"
+                    type="email"
+                    name="email"
+                    className="cp-msg-input"
+                    placeholder="you@domain.com"
+                    value={formData.email}
+                    onChange={handleChange}
+                    onFocus={() => setFocusedField('email')}
+                    onBlur={() => setFocusedField(null)}
+                    autoComplete="email"
+                  />
+                  <div className="cp-msg-accent-line"></div>
+                </div>
+                {errors.email && <span className="cp-msg-error">{errors.email}</span>}
+              </div>
+
+              <div className={`cp-msg-field ${focusedField === 'subject' ? 'focused' : ''} ${errors.subject ? 'error' : ''} ${formData.subject ? 'filled' : ''}`}>
+                <div className="cp-msg-field-head">
+                  <span className="cp-msg-num">03</span>
+                  <label className="cp-msg-label" htmlFor="cp-subject">Subject</label>
+                </div>
+                <div className="cp-msg-input-wrap">
                   <input
                     id="cp-subject"
                     type="text"
                     name="subject"
-                    className="form-input"
+                    className="cp-msg-input"
                     placeholder="Project inquiry, collaboration, etc."
                     value={formData.subject}
                     onChange={handleChange}
+                    onFocus={() => setFocusedField('subject')}
+                    onBlur={() => setFocusedField(null)}
                   />
-                  {errors.subject && <span className="form-error">{errors.subject}</span>}
+                  <div className="cp-msg-accent-line"></div>
                 </div>
+                {errors.subject && <span className="cp-msg-error">{errors.subject}</span>}
               </div>
 
-              <div className={`form-shell ${errors.message ? 'error' : ''}`}>
-                <div className="form-core">
-                  <label className="form-label" htmlFor="cp-message">Message</label>
+              <div className={`cp-msg-field ${focusedField === 'message' ? 'focused' : ''} ${errors.message ? 'error' : ''} ${formData.message ? 'filled' : ''}`}>
+                <div className="cp-msg-field-head">
+                  <span className="cp-msg-num">04</span>
+                  <label className="cp-msg-label" htmlFor="cp-message">Message</label>
+                </div>
+                <div className="cp-msg-input-wrap">
                   <textarea
                     id="cp-message"
                     name="message"
-                    className="form-input form-textarea"
-                    rows="6"
-                    placeholder="Tell me about your project..."
+                    className="cp-msg-input cp-msg-textarea"
+                    rows="5"
+                    placeholder="Tell me about your project, timeline, and goals..."
                     value={formData.message}
                     onChange={handleChange}
+                    onFocus={() => setFocusedField('message')}
+                    onBlur={() => setFocusedField(null)}
                   ></textarea>
-                  {errors.message && <span className="form-error">{errors.message}</span>}
+                  <div className="cp-msg-accent-line"></div>
+                </div>
+                <div className="cp-msg-field-foot">
+                  {errors.message && <span className="cp-msg-error">{errors.message}</span>}
+                  <span className="cp-msg-char-count">
+                    {formData.message.length > 0 && (
+                      <span className="cp-msg-chars">{formData.message.length} chars</span>
+                    )}
+                  </span>
                 </div>
               </div>
 
-              <button ref={submitRef} type="submit" className="submit-btn">
-                <span>Send Message</span>
-                <span className="submit-btn-icon">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
-                  </svg>
-                </span>
-              </button>
+              <div className="cp-msg-submit-row">
+                <div className="cp-msg-submit-hints">
+                  <span className="cp-msg-hint">Tab</span>
+                  <span className="cp-msg-hint-sep">·</span>
+                  <span className="cp-msg-hint">Enter</span>
+                </div>
+                <button
+                  ref={submitRef}
+                  type="submit"
+                  className={`cp-msg-send ${isSubmitting ? 'submitting' : ''}`}
+                  disabled={isSubmitting || !formData.name || !formData.email || !formData.subject || !formData.message}
+                >
+                  <span className="cp-msg-send-text">
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
+                  </span>
+                  <span className="cp-msg-send-arrow">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                  </span>
+                  {isSubmitting && <span className="cp-msg-send-spinner"></span>}
+                </button>
+              </div>
+
             </form>
           </div>
 
