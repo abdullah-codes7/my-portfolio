@@ -1,4 +1,5 @@
-import { useScrollAnimation, useStaggerAnimation } from '../hooks/useScrollAnimation'
+import { useRef, useCallback } from 'react'
+import { useScrollAnimation, useStaggerAnimation, useTilt, useParallax } from '../hooks/useScrollAnimation'
 import AnimatedTitle from './AnimatedTitle'
 import './Process.css'
 
@@ -22,6 +23,72 @@ const steps = [
     tags: ['Deploy', 'CI/CD', 'Monitoring'],
   },
 ]
+
+function ProcessBlock({ step, index, setRef, visible }) {
+  const tiltRef = useTilt({ max: 6, scale: 1.02 })
+  const [parallaxRef, offset] = useParallax(0.3)
+  const cardRef = useRef(null)
+
+  const handleMouseMove = useCallback((e) => {
+    const card = cardRef.current
+    if (!card) return
+    const rect = card.getBoundingClientRect()
+    const x = ((e.clientX - rect.left) / rect.width) * 100
+    const y = ((e.clientY - rect.top) / rect.height) * 100
+    card.style.setProperty('--mx', `${x}%`)
+    card.style.setProperty('--my', `${y}%`)
+  }, [])
+
+  return (
+    <div
+      ref={(el) => { setRef(index)(el); parallaxRef.current = el }}
+      className={`process-block anim-fade-up ${visible ? 'visible' : ''} ${index % 2 === 0 ? 'align-left' : 'align-right'}`}
+      style={{ transitionDelay: `${index * 0.15}s` }}
+    >
+      {/* Watermark number — parallax */}
+      <span
+        ref={(el) => { if (el) el.style.transform = `translateY(${offset}px)` }}
+        className="process-watermark"
+      >
+        {step.number}
+      </span>
+
+      {/* Content card — tilt + spotlight */}
+      <div
+        ref={(el) => { tiltRef.current = el; cardRef.current = el }}
+        className="process-card tilt-card"
+        onMouseMove={handleMouseMove}
+      >
+        <span className="tilt-glare" aria-hidden="true"></span>
+        <div className="process-card-inner">
+          <div className="process-card-top">
+            <span className="process-card-num">{step.number}</span>
+            <div className="process-card-line"></div>
+            <h3 className="process-card-title">{step.title}</h3>
+          </div>
+          <p className="process-card-desc">{step.description}</p>
+          <div className="process-card-tags">
+            {step.tags.map((tag, j) => (
+              <span
+                key={tag}
+                className="process-card-tag"
+                style={{ transitionDelay: `${index * 0.15 + j * 0.05 + 0.3}s` }}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Step dot */}
+      <div className="process-step-dot">
+        <span className="process-step-dot-ring"></span>
+        <span className="process-step-dot-core"></span>
+      </div>
+    </div>
+  )
+}
 
 function Process() {
   const [titleRef, titleVisible] = useScrollAnimation(0.2)
@@ -62,42 +129,13 @@ function Process() {
           </div>
 
           {steps.map((step, i) => (
-            <div
+            <ProcessBlock
               key={step.number}
-              ref={setRef(i)}
-              className={`process-block anim-fade-up ${stepsVisible.has(i) ? 'visible' : ''} ${i % 2 === 0 ? 'align-left' : 'align-right'}`}
-              style={{ transitionDelay: `${i * 0.15}s` }}
-            >
-              {/* Watermark number */}
-              <span className="process-watermark">{step.number}</span>
-
-              {/* Content card */}
-              <div className="process-card">
-                <div className="process-card-top">
-                  <span className="process-card-num">{step.number}</span>
-                  <div className="process-card-line"></div>
-                  <h3 className="process-card-title">{step.title}</h3>
-                </div>
-                <p className="process-card-desc">{step.description}</p>
-                <div className="process-card-tags">
-                  {step.tags.map((tag, j) => (
-                    <span
-                      key={tag}
-                      className="process-card-tag"
-                      style={{ transitionDelay: `${i * 0.15 + j * 0.05 + 0.3}s` }}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Step dot */}
-              <div className="process-step-dot">
-                <span className="process-step-dot-ring"></span>
-                <span className="process-step-dot-core"></span>
-              </div>
-            </div>
+              step={step}
+              index={i}
+              setRef={setRef}
+              visible={stepsVisible.has(i)}
+            />
           ))}
 
         </div>
