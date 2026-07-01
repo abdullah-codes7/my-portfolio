@@ -46,7 +46,7 @@ export const allProjects = [
     longDescription: 'A premium portfolio website for Maria Islam, a motion graphics designer. Features cinematic scroll animations, bold editorial typography, and an immersive visual experience that showcases creative work with dramatic flair.',
     tech: ['React', 'GSAP', 'Tailwind CSS', 'Framer Motion'],
     year: '2026',
-    status: 'Live',
+    status: 'Development',
     role: 'Frontend Developer',
     link: 'https://maria-portfolio-ashen.vercel.app/',
     image: '/projects/maria-portfolio.png',
