@@ -47,9 +47,7 @@ function Navbar() {
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="nav-pill">
           <Link to="/" className="logo">
-            <span className="logo-bracket">[</span>
-            <span className="logo-text">V</span>
-            <span className="logo-bracket">]</span>
+            <img src="/logo-removebg.png" alt="Abdullah" className="logo-img" />
           </Link>
 
           <div className="nav-links-desktop">
