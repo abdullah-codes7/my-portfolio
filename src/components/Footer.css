@@ -130,6 +130,7 @@
   font-weight: 900;
   letter-spacing: 0.08em;
   line-height: 0.9;
+  white-space: nowrap;
   background: linear-gradient(180deg,
     rgba(255, 255, 255, 1) 0%,
     rgba(255, 255, 255, 0.7) 40%,
@@ -357,6 +358,9 @@
   }
 
   .footer-name {
-    font-size: clamp(3rem, 15vw, 5rem);
+    font-size: clamp(2.5rem, 10vw, 4rem);
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
   }
 }
