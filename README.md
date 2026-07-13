@@ -1,7 +1,6 @@
 <div align="center">
 
-# VALTRIX
-
+# ABDULLAH
 ### Full Stack Developer Portfolio
 
 [![React](https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=black)](https://reactjs.org/)
