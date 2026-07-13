@@ -34,6 +34,7 @@ function Navbar() {
   const navItems = [
     { label: 'About', path: '/about' },
     { label: 'Projects', path: '/projects' },
+    { label: 'Open Source', path: '/open-source' },
     { label: 'Contact', path: '/contact' },
   ]
 

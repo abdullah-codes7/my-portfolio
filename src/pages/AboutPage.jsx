@@ -1,11 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useScrollAnimation, useCountUp, useTilt, useScrollTilt, useStaggerAnimation } from '../hooks/useScrollAnimation'
 import AnimatedTitle from '../components/AnimatedTitle'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './AboutPage.css'
-
-gsap.registerPlugin(ScrollTrigger)
 
 const timeline = [
   {
@@ -148,73 +144,8 @@ function BioStat({ stat, index }) {
 
 function AboutPage() {
   const [titleRef, titleVisible] = useScrollAnimation(0.2)
-  const containerRef = useRef(null)
-  const wrapperRef = useRef(null)
-
   useEffect(() => {
     window.scrollTo(0, 0)
-  }, [])
-
-  useEffect(() => {
-    const container = containerRef.current
-    const wrapper = wrapperRef.current
-    if (!container || !wrapper) return
-
-    // Horizontal pin only on desktop/fine-pointer, and never under reduced
-    // motion. matchMedia gives automatic teardown + re-init when crossing the
-    // breakpoint, which avoids the classic "sticky breaks on mobile" bug.
-    const mm = gsap.matchMedia()
-
-    mm.add(
-      {
-        isDesktop: '(min-width: 769px) and (pointer: fine)',
-        reduceMotion: '(prefers-reduced-motion: reduce)',
-      },
-      (ctx) => {
-        // Bail on anything but a desktop without reduced motion — the CSS
-        // fallback (vertical stack) owns the layout in those cases.
-        if (!ctx.conditions.isDesktop || ctx.conditions.reduceMotion) return
-
-        // The pin distance must EXACTLY equal the horizontal travel, otherwise
-        // the animation ends mid-panel or runs past the last one. We set the
-        // wrapper height in JS from the real measured scrollWidth so it stays
-        // correct across resize / font-load (a captured constant goes stale).
-        const setWrapperHeight = () => {
-          const scrollWidth = container.scrollWidth - window.innerWidth
-          wrapper.style.height = `${scrollWidth + window.innerHeight}px`
-        }
-        setWrapperHeight()
-
-        const tween = gsap.to(container, {
-          x: () => -(container.scrollWidth - window.innerWidth),
-          ease: 'none',
-          scrollTrigger: {
-            trigger: wrapper,
-            start: 'top top',
-            end: () => `+=${container.scrollWidth - window.innerWidth}`,
-            scrub: 1,
-            invalidateOnRefresh: true,
-            onRefresh: setWrapperHeight,
-          },
-        })
-
-        return () => {
-          tween.scrollTrigger && tween.scrollTrigger.kill()
-          tween.kill()
-        }
-      }
-    )
-
-    // Refresh after web fonts settle (they shift scrollWidth).
-    const refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 300)
-    const onLoad = () => ScrollTrigger.refresh()
-    window.addEventListener('load', onLoad)
-
-    return () => {
-      clearTimeout(refreshTimer)
-      window.removeEventListener('load', onLoad)
-      mm.revert()
-    }
   }, [])
 
   const stats = [
@@ -242,67 +173,56 @@ function AboutPage() {
       <div className="about-page-bio">
         <div className="h-section-grid">
           <div className="h-bio-text">
-            <p className="h-bio-lead">
-              I'm Abdullah — a full stack developer who builds web applications
-              and decentralized systems. I care about clean architecture,
-              security, and creating things that actually work well.
-            </p>
-            <p className="h-bio-regular">
-              My work spans the full stack: from React frontends and Node.js APIs
-              to Solidity smart contracts and on-chain protocols.
-            </p>
-            <p className="h-bio-regular">
-              When I'm not coding, I'm exploring new protocols, experimenting
-              with zero-knowledge proofs, or designing interfaces that make
-              complex systems feel simple.
-            </p>
+            <ul className="about-page-bio-list">
+              <li>I'm Abdullah — a full stack developer who builds web applications and decentralized systems. I care about clean architecture, security, and creating things that actually work well.</li>
+              <li>My work spans the full stack: from React frontends and Node.js APIs to Solidity smart contracts and on-chain protocols.</li>
+              <li>When I'm not coding, I'm exploring new protocols, experimenting with zero-knowledge proofs, or designing interfaces that make complex systems feel simple.</li>
+            </ul>
           </div>
 
         </div>
       </div>
 
-      {/* Horizontal Scroll — Stats / Journey / Philosophy only */}
-      <div className="h-scroll-wrapper" ref={wrapperRef}>
-        <div className="h-scroll-container" ref={containerRef}>
+      {/* Vertical Stack — Stats / Journey / Philosophy */}
+      <div className="about-page-sections">
 
-          {/* Stats */}
-          <div className="h-section h-section-stats">
-            <div className="h-section-label">Stats</div>
-            <div className="h-stats-row">
-              {stats.map((stat, i) => (
-                <BioStat key={i} stat={stat} index={i} />
-              ))}
-            </div>
+        {/* Stats */}
+        <div className="h-section h-section-stats">
+          <div className="h-section-label">Stats</div>
+          <div className="h-stats-row">
+            {stats.map((stat, i) => (
+              <BioStat key={i} stat={stat} index={i} />
+            ))}
           </div>
-
-          {/* Journey */}
-          <div className="h-section h-section-journey">
-            <div className="h-section-label">Journey</div>
-            <div className="h-journey-row">
-              {timeline.map((item, i) => (
-                <div key={i} className="h-journey-card">
-                  <div className="h-journey-year">{item.year}</div>
-                  <div className="h-journey-body">
-                    <div className="h-journey-icon">{item.icon}</div>
-                    <h3 className="h-journey-title">{item.title}</h3>
-                    <p className="h-journey-desc">{item.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Values */}
-          <div className="h-section h-section-values">
-            <div className="h-section-label">Philosophy</div>
-            <div className="h-values-row">
-              {values.map((value, i) => (
-                <ValueCard key={i} value={value} index={i} />
-              ))}
-            </div>
-          </div>
-
         </div>
+
+        {/* Journey */}
+        <div className="h-section h-section-journey">
+          <div className="h-section-label">Journey</div>
+          <div className="h-journey-row">
+            {timeline.map((item, i) => (
+              <div key={i} className="h-journey-card">
+                <div className="h-journey-year">{item.year}</div>
+                <div className="h-journey-body">
+                  <div className="h-journey-icon">{item.icon}</div>
+                  <h3 className="h-journey-title">{item.title}</h3>
+                  <p className="h-journey-desc">{item.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Values */}
+        <div className="h-section h-section-values">
+          <div className="h-section-label">Philosophy</div>
+          <div className="h-values-row">
+            {values.map((value, i) => (
+              <ValueCard key={i} value={value} index={i} />
+            ))}
+          </div>
+        </div>
+
       </div>
     </section>
   )

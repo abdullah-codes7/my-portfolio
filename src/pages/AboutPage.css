@@ -6,9 +6,7 @@
 }
 
 .about-page-header {
-  padding: clamp(6rem, 10vw, 10rem) clamp(1.5rem, 4vw, 4rem) clamp(1.5rem, 3vw, 2rem);
-  max-width: 1100px;
-  margin: 0 auto;
+  padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1.5rem, 4vw, 4rem) clamp(2rem, 4vw, 3rem);
 }
 
 .about-page-header .page-subtitle {
@@ -22,41 +20,23 @@
 /* ==================== */
 /* Sits flush under the header — no gap — and flows vertically. */
 .about-page-bio {
-  max-width: 1100px;
-  margin: 0 auto;
   padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1.5rem, 4vw, 4rem) clamp(4rem, 8vw, 7rem);
 }
 
 /* ==================== */
-/* GSAP HORIZONTAL SCROLL */
+/* VERTICAL SECTIONS    */
 /* ==================== */
-/* Wrapper height is set in JS from the real measured scrollWidth so the
-   vertical scroll distance exactly matches the horizontal travel. The
-   default 400vh here is just a pre-hydration fallback and is overwritten. */
-.h-scroll-wrapper {
-  position: relative;
-  width: 100%;
-  height: 400vh;
-}
-
-.h-scroll-container {
+.about-page-sections {
+  padding: 0 clamp(1.5rem, 4vw, 4rem);
   display: flex;
-  flex-wrap: nowrap;
-  width: max-content;
-  height: 100dvh;
-  position: sticky;
-  top: 0;
-  will-change: transform;
+  flex-direction: column;
+  gap: clamp(4rem, 8vw, 6rem);
+  padding-bottom: clamp(6rem, 10vw, 8rem);
 }
 
 .h-section {
-  flex: 0 0 auto;
-  width: 100vw;
-  height: 100dvh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: clamp(2rem, 4vw, 4rem);
 }
 
 .h-section-label {
@@ -77,26 +57,39 @@
 .h-section-grid {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
-  gap: clamp(2rem, 4vw, 4rem);
+  gap: clamp(1.5rem, 3vw, 2rem);
   align-items: start;
-  max-width: 1100px;
-  margin: 0 auto;
   width: 100%;
 }
 
-.h-bio-lead {
-  font-size: 1.25rem;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.7;
-  margin-bottom: 1.25rem;
+.about-page-bio-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
-.h-bio-regular {
+.about-page-bio-list li {
   font-size: 1rem;
   color: var(--text-secondary);
   line-height: 1.75;
-  margin-bottom: 1rem;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.about-page-bio-list li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: rgba(255, 255, 255, 0.4);
+  font-family: var(--font-futuristic);
+}
+
+.about-page-bio-list li:first-child {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* Terminal */
@@ -205,7 +198,7 @@
 /* STATS SECTION        */
 /* ==================== */
 .h-section-stats {
-  width: 60vw;
+  width: 100%;
 }
 
 .h-stats-row {
@@ -257,17 +250,17 @@
 /* JOURNEY SECTION      */
 /* ==================== */
 .h-section-journey {
-  width: 140vw;
+  width: 100%;
 }
 
 .h-journey-row {
-  display: flex;
-  gap: 2rem;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
 }
 
 .h-journey-card {
-  flex: 0 0 auto;
-  width: 280px;
+  width: 100%;
 }
 
 .h-journey-year {
@@ -325,13 +318,13 @@
 /* VALUES SECTION       */
 /* ==================== */
 .h-section-values {
-  width: 100vw;
+  width: 100%;
 }
 
 .h-values-row {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
 }
 
 .h-value-card {
@@ -385,8 +378,8 @@
 /* RESPONSIVE           */
 /* ==================== */
 @media (max-width: 768px) {
-  .h-section {
-    padding: clamp(1.5rem, 3vw, 2rem);
+  .about-page-sections {
+    gap: 3rem;
   }
 
   .h-section-grid {
@@ -394,85 +387,17 @@
     gap: 2rem;
   }
 
-  .h-section-stats {
-    width: 90vw;
-  }
-
   .h-stats-row {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
 
-  .h-section-journey {
-    width: 200vw;
-  }
-
-  .h-journey-card {
-    width: 240px;
-  }
-
-  .h-section-values {
-    width: 100vw;
+  .h-journey-row {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
   .h-values-row {
     grid-template-columns: 1fr;
-  }
-}
-
-/* ==================== */
-/* FALLBACK LAYOUT      */
-/* When the GSAP pin is disabled — reduced motion, touch devices, or */
-/* narrow viewports — stack the panels vertically instead of letting the */
-/* horizontal flex overflow sideways. JS skips the pin in these cases,   */
-/* so the CSS must own the layout here.                                   */
-@media (max-width: 768px), (pointer: coarse) {
-  .h-scroll-wrapper {
-    height: auto;
-  }
-
-  .h-scroll-container {
-    position: static;
-    flex-direction: column;
-    width: 100%;
-    height: auto;
-  }
-
-  .h-section {
-    width: 100% !important;
-    height: auto;
-    min-height: auto;
-    padding-block: clamp(3rem, 8vw, 6rem);
-  }
-
-  /* Journey row: let cards wrap instead of forcing a 200vw-wide track. */
-  .h-journey-row {
-    flex-wrap: wrap;
-  }
-
-  .h-journey-card {
-    width: 100%;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  /* Same vertical stack: motion is off, so there is no horizontal scrub. */
-  .h-scroll-wrapper {
-    height: auto;
-  }
-
-  .h-scroll-container {
-    position: static;
-    flex-direction: column;
-    width: 100%;
-    height: auto;
-    transform: none !important;
-  }
-
-  .h-section {
-    width: 100% !important;
-    height: auto;
-    min-height: auto;
-    padding-block: clamp(3rem, 8vw, 6rem);
   }
 }

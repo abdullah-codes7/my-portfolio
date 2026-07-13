@@ -3,7 +3,8 @@
 /* ==================== */
 .about {
   position: relative;
-  padding: clamp(6rem, 12vw, 10rem) clamp(1.5rem, 4vw, 4rem);
+  /* Aggressively reduced padding to tighten layout */
+  padding: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 4vw, 4rem);
   background: var(--bg-primary);
   overflow: hidden;
 }
@@ -29,8 +30,8 @@
 .about-top {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: clamp(3rem, 6vw, 6rem);
-  margin-bottom: clamp(4rem, 8vw, 6rem);
+  gap: clamp(2rem, 4vw, 3rem);
+  margin-bottom: clamp(2rem, 4vw, 3rem);
   align-items: start;
 }
 
@@ -49,18 +50,34 @@
   padding-top: 0.5rem;
 }
 
-.about-bio-lead {
-  font-size: 1.25rem;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.7;
-  margin-bottom: 1.25rem;
+.about-bio-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.about-bio-text {
-  font-size: 1rem;
+.about-bio-list li {
+  font-size: 1.0625rem;
   color: var(--text-secondary);
-  line-height: 1.75;
+  line-height: 1.7;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.about-bio-list li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: rgba(255, 255, 255, 0.4);
+  font-family: var(--font-futuristic);
+}
+
+.about-bio-list li:first-child {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* ==================== */
@@ -71,7 +88,7 @@
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--border-subtle);
   overflow: hidden;
-  margin-bottom: clamp(3rem, 6vw, 4rem);
+  margin-bottom: clamp(2rem, 4vw, 3rem);
   transition: border-color 0.5s ease, box-shadow 0.5s ease;
 }
 
@@ -186,7 +203,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
-  margin-bottom: clamp(4rem, 8vw, 5rem);
+  margin-bottom: clamp(2rem, 4vw, 3rem);
 }
 
 .about-bento-card {

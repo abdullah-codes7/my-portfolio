@@ -1,0 +1,171 @@
+/* ==================== */
+/* OPEN SOURCE PAGE     */
+/* ==================== */
+.os-page {
+  background: var(--bg-primary);
+  min-height: 100vh;
+}
+
+.os-page-header {
+  padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1.5rem, 4vw, 4rem) clamp(2rem, 4vw, 3rem);
+}
+
+.os-eyebrow {
+  font-family: var(--font-futuristic);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.os-eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  background: #28c840;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #28c840;
+}
+
+.os-page-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.os-page-subtitle {
+  font-size: 1rem;
+  color: var(--text-tertiary);
+}
+
+/* ==================== */
+/* LIST LAYOUT          */
+/* ==================== */
+.os-page-content {
+  padding: 0 clamp(1.5rem, 4vw, 4rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  padding-bottom: clamp(6rem, 10vw, 8rem);
+}
+
+/* ==================== */
+/* HORIZONTAL CARDS     */
+/* ==================== */
+.os-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 100%;
+}
+
+.os-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.os-card-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 600px;
+}
+
+.os-card-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.os-card-desc {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.os-card-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.os-tech-tag {
+  font-family: var(--font-futuristic);
+  font-size: 0.6875rem;
+  color: rgba(100, 255, 150, 0.8);
+  background: rgba(100, 255, 150, 0.05);
+  border: 1px solid rgba(100, 255, 150, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 100px;
+  letter-spacing: 0.05em;
+}
+
+.os-card-right {
+  flex-shrink: 0;
+}
+
+.os-github-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.os-github-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.os-github-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* ==================== */
+/* RESPONSIVE           */
+/* ==================== */
+@media (max-width: 768px) {
+  .os-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .os-card-right {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .os-github-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

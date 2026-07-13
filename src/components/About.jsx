@@ -183,15 +183,11 @@ function About() {
             ref={bioRef}
             className={`about-bio-col anim-fade-up ${bioVisible ? 'visible' : ''}`}
           >
-            <p className="about-bio-lead">
-              I'm Abdullah — a full stack developer building web applications
-              and decentralized systems that push the boundary of what's possible.
-            </p>
-            <p className="about-bio-text">
-              I work across the full stack — from React and Node.js to Solidity
-              and smart contract architectures. Clean code, solid architecture,
-              and security-first thinking drive everything I build.
-            </p>
+            <ul className="about-bio-list">
+              <li>I'm Abdullah — a full stack developer building web applications and decentralized systems that push the boundary of what's possible.</li>
+              <li>I work across the full stack — from React and Node.js to Solidity and smart contract architectures.</li>
+              <li>Clean code, solid architecture, and security-first thinking drive everything I build.</li>
+            </ul>
           </div>
         </div>
 

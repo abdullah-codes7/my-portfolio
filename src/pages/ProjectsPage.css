@@ -1,5 +1,5 @@
 .projects-page {
-  padding: clamp(8rem, 12vw, 12rem) clamp(1.5rem, 4vw, 4rem) clamp(6rem, 10vw, 8rem);
+  padding: clamp(4rem, 8vw, 6rem) clamp(1.5rem, 4vw, 4rem) clamp(3rem, 6vw, 5rem);
   background: var(--bg-primary);
   min-height: 100dvh;
 }

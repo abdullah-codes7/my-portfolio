@@ -9,7 +9,7 @@
 .pd-container {
   max-width: 900px;
   margin: 0 auto;
-  padding: clamp(6rem, 10vw, 10rem) clamp(1.5rem, 4vw, 4rem) clamp(4rem, 8vw, 6rem);
+  padding: clamp(4rem, 8vw, 6rem) clamp(1.5rem, 4vw, 4rem) clamp(2rem, 4vw, 3rem);
 }
 
 /* Back */
