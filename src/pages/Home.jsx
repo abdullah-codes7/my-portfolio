@@ -29,7 +29,7 @@ const homeSchema = {
       "image": "https://imabdullah.xyz/og.png",
       "sameAs": [
         "https://github.com/abdullah-codes7",
-        "https://twitter.com/abdullah-codes7"
+        "https://twitter.com/abdullah_codes7"
       ]
     }
   ]
