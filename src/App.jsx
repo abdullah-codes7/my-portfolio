@@ -61,6 +61,9 @@ const AIAssistantIcon = memo(({ onClick, hasOpenedChat }) => {
 // ── Lazy-load every page so each becomes its own async chunk.
 const Home = lazy(() => import('./pages/Home'))
 const ProjectsPage = lazy(() => import('./pages/ProjectsPage'))
+const ProductsPage = lazy(() => import('./pages/ProductsPage'))
+const BlogPage = lazy(() => import('./pages/BlogPage'))
+const BlogPostPage = lazy(() => import('./pages/BlogPostPage'))
 const ProjectDetail = lazy(() => import('./pages/ProjectDetail'))
 const AboutPage = lazy(() => import('./pages/AboutPage'))
 const ContactPage = lazy(() => import('./pages/ContactPage'))
@@ -163,6 +166,9 @@ function AppContent({ cursorReady }) {
               <Route path="/" element={<Home />} />
               <Route path="/projects" element={<ProjectsPage />} />
               <Route path="/projects/:id" element={<ProjectDetail />} />
+              <Route path="/products" element={<ProductsPage />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:slug" element={<BlogPostPage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/open-source" element={<OpenSourcePage />} />

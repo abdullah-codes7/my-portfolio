@@ -39,7 +39,7 @@ const AIAssistantChat = memo(({ isOpen, onClose }) => {
         },
         {
           keywords: ['project', 'work', 'portfolio', 'built', 'experience', 'made'],
-          response: "Abdullah has built amazing projects like WHITE Fintech, STXWORX (a Web3 marketplace), and high-end agency portfolios. You can check them out in the Projects section!"
+          response: "Abdullah has built amazing projects like WHITE Fintech (fintech website), Lucent AI (AEO agency site), and high-end portfolios. You can check them out in the Projects section!"
         },
         {
           keywords: ['contact', 'hire', 'email', 'reach', 'talk', 'message', 'freelance', 'job'],

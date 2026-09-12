@@ -102,6 +102,8 @@ function Footer() {
               <Link to="/" className="footer-nav-link">Home</Link>
               <Link to="/about" className="footer-nav-link">About</Link>
               <Link to="/projects" className="footer-nav-link">Projects</Link>
+              <Link to="/products" className="footer-nav-link">Products</Link>
+              <Link to="/blog" className="footer-nav-link">Blog</Link>
               <Link to="/contact" className="footer-nav-link">Contact</Link>
             </nav>
           </div>
