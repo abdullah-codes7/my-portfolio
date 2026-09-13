@@ -157,14 +157,13 @@ All interactions are modularized into a set of custom performance-tuned hooks:
 - **Router Navigation**: Mounts routes inside `<PageTransition>` and updates a global `<Navbar />` and `<Footer />`.
 
 ### 🌌 2. Hero Section (`src/components/Hero.jsx` & `src/components/Hero.css`)
-- **WebGL Eclipse**: A single fullscreen fragment-shader quad (`EclipseCanvas`) draws the black disc, bright rim ring, corona haze/streaks, dashed orbit rings and orbiting dots — one draw call replaces the old 15+ composited DOM layers (SVG blur filters, blend modes).
-- **Render Lifecycle**: 30fps cap, DPR-capped backing store (≤1.5 DPR, ≤1400px), paused via IntersectionObserver + `visibilitychange`; `WEBGL_lose_context` on unmount.
-- **Static Fallback**: `.eclipse-fallback` renders when WebGL is unavailable or `prefers-reduced-motion` is set.
-- **Scroll Parallax**: One passive scroll listener writes a `--sp` (0→1) custom property on `.hero`; CSS `calc()` derives opacity/translate/scale — zero per-frame layout reads.
-- **Mouse Parallax**: Pointer position is lerped and passed as shader uniforms — never React state or DOM writes.
-- **Typewriter Effect**: Pure-CSS `steps(20)` reveal of "Full Stack Developer" with blinking caret — zero React re-renders.
-- **Action Buttons**: Uses `<Link>` with `useMagnetic` hook to draw mouse attraction on hover.
-- **Particles**: 12 randomized drifting dots (transform/opacity only) over a static masked blueprint grid.
+- **Moon Video Background**: Full-bleed `<video>` (muted, looped, `playsInline` — no sound) of crescent moon footage from Abdullah's public Vercel Blob bucket (`VIDEO_SRC` constant), `object-fit: cover`.
+- **Video Lifecycle**: Autoplays only while the hero is in the viewport **and** the tab is visible (IntersectionObserver + `visibilitychange`); paused static frame for `prefers-reduced-motion`; static moon-glow fallback layer shows while buffering or on error (`videoOk` state unmounts the video).
+- **Editorial Layout** (modeled on a reference design): giant ghost "01" watermark behind the headline, two-line masked-reveal title ("Full Stack / Developer"), aside column with intro blurb + accent "More about me" link, numbered CTA items (`01 Explore projects → /projects`, `02 Start a project → /contact`) with accent-hover top borders, vertical "PORTFOLIO"/"SCROLL DOWN" rails on the edges, GitHub/X social icons bottom-left.
+- **Legibility Scrims**: `.hero-scrim` layers a left-side darkening gradient + top/bottom vignette over the footage.
+- **Magnetic Links**: Editorial links use `useMagnetic` (aside link 0.2, index items 0.3).
+- **Scroll Parallax**: One passive listener writes a `--sp` (0→1) custom property on `.hero`; CSS `calc()` fades/translates the content and zooms the video layer — zero per-frame layout reads.
+- **Entrance Reveals**: Pure-CSS masked line reveals + staggered opacity/translate transitions triggered by a `.visible` class (no JS animation).
 
 ### 🍱 3. About Section (`src/components/About.jsx` & `src/components/About.css`)
 - **Terminal Element**: Displays a custom environment output (`whoami`) alongside a synchronized digital clock matching Pakistan Standard Time (`Asia/Karachi`).
