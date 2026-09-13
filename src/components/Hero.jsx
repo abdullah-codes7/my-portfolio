@@ -1,11 +1,11 @@
-import { memo, useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useMagnetic } from '../hooks/useScrollAnimation'
 import './Hero.css'
 
-/* Moon footage hosted on Abdullah's public Vercel Blob bucket. */
+/* Moon footage hosted on Abdullah's public Vercel Blob bucket (~4.9MB). */
 const VIDEO_SRC =
-  'https://ihjnlxtcammfqazs.public.blob.vercel-storage.com/Crescent_moon_against_black_void_20260913133505.mp4'
+  'https://ihjnlxtcammfqazs.public.blob.vercel-storage.com/Crescent_moon_with_twinkling_stars_20260913140841.mp4'
 
 const IconGitHub = (
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -24,23 +24,33 @@ const SOCIALS = [
   { label: 'X (Twitter)', href: 'https://twitter.com/abdullah_codes7', icon: IconX },
 ]
 
-const IconArrow = (
-  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M5 12h14M12 5l7 7-7 7" />
-  </svg>
-)
-
 const Hero = memo(function Hero() {
   const heroRef = useRef(null)
   const videoRef = useRef(null)
 
-  /* Magnetic — editorial links pull gently toward the cursor */
-  const moreRef = useMagnetic(0.2)
-  const indexProjectsRef = useMagnetic(0.3)
-  const indexContactRef = useMagnetic(0.3)
+  /* Magnetic — pill CTAs pull toward cursor (same feel as before) */
+  const ctaPrimaryRef = useMagnetic(0.35)
+  const ctaGhostRef = useMagnetic(0.25)
 
   const [visible, setVisible] = useState(false)
+  const [renderVideo, setRenderVideo] = useState(false)
   const [videoOk, setVideoOk] = useState(true)
+
+  /* Decide whether a <video> should exist AT ALL before first paint:
+     - prefers-reduced-motion → static glow, no video download
+     - Data Saver on → skip the ~4.9MB fetch entirely
+     Otherwise mount it; playback still pauses offscreen / on hidden tabs. */
+  useLayoutEffect(() => {
+    let skip = false
+    try {
+      skip =
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+        Boolean(navigator.connection && navigator.connection.saveData)
+    } catch {
+      skip = false
+    }
+    setRenderVideo(!skip)
+  }, [])
 
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), 250)
@@ -72,17 +82,10 @@ const Hero = memo(function Hero() {
     }
   }, [])
 
-  /* video lifecycle: plays only while the hero is on screen and the tab is
-     visible; fully static (paused) for prefers-reduced-motion */
+  /* playback lifecycle: only while the hero is on screen and the tab is visible */
   useEffect(() => {
     const video = videoRef.current
     if (!video) return undefined
-
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      video.pause()
-      video.removeAttribute('autoplay')
-      return undefined
-    }
 
     let inView = true
     let tabVisible = !document.hidden
@@ -111,14 +114,14 @@ const Hero = memo(function Hero() {
       io.disconnect()
       document.removeEventListener('visibilitychange', onVis)
     }
-  }, [])
+  }, [renderVideo])
 
   return (
     <section id="hero" ref={heroRef} className={`hero${visible ? ' visible' : ''}`}>
       {/* background footage — muted, looped, no sound */}
       <div className="hero-media" aria-hidden="true">
         <div className="hero-media-fallback" />
-        {videoOk && (
+        {renderVideo && videoOk && (
           <video
             ref={videoRef}
             className="hero-video"
@@ -129,6 +132,7 @@ const Hero = memo(function Hero() {
             playsInline
             preload="auto"
             disablePictureInPicture
+            disableRemotePlayback
             onError={() => setVideoOk(false)}
           />
         )}
@@ -145,45 +149,36 @@ const Hero = memo(function Hero() {
       </div>
 
       <div className="hero-inner">
-        <span className="hero-ghost" aria-hidden="true">01</span>
+        <div className="hero-main">
+          <p className="hero-eyebrow">
+            <span className="hero-eyebrow-dot" />
+            Available for projects
+          </p>
 
-        <div className="hero-top">
-          <div className="hero-main">
-            <p className="hero-eyebrow">
-              <span className="hero-eyebrow-dot" />
-              Abdullah — Available for projects
-            </p>
-            <h1 className="hero-title">
-              <span className="hero-title-line">
-                <span className="hero-title-text">Full Stack</span>
-              </span>
-              <span className="hero-title-line">
-                <span className="hero-title-text">Developer</span>
-              </span>
-            </h1>
-          </div>
+          <h1 className="hero-name">
+            <span className="hero-name-line">
+              <span className="hero-name-text">ABDULLAH</span>
+            </span>
+          </h1>
 
-          <div className="hero-aside">
-            <p>
-              I design and build fast, scalable products for the web — from
-              pixel-perfect interfaces to resilient back-end systems.
-            </p>
-            <Link ref={moreRef} to="/about" className="hero-more">
-              More about me
-              {IconArrow}
+          {/* CSS steps() typewriter — zero React re-renders */}
+          <p className="hero-role">
+            <span className="role-type">Full Stack Developer</span>
+          </p>
+
+          <div className="hero-actions">
+            <Link ref={ctaPrimaryRef} to="/projects" className="cta-primary">
+              <span>Explore work</span>
+              <span className="cta-icon-circle">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </span>
+            </Link>
+            <Link ref={ctaGhostRef} to="/contact" className="cta-ghost">
+              Let&apos;s talk
             </Link>
           </div>
-        </div>
-
-        <div className="hero-index">
-          <Link ref={indexProjectsRef} to="/projects" className="hero-index-item">
-            <span className="hero-index-num">01</span>
-            <span className="hero-index-label">Explore projects</span>
-          </Link>
-          <Link ref={indexContactRef} to="/contact" className="hero-index-item">
-            <span className="hero-index-num">02</span>
-            <span className="hero-index-label">Start a project</span>
-          </Link>
         </div>
       </div>
 
@@ -200,3 +195,4 @@ const Hero = memo(function Hero() {
 })
 
 export default Hero
+
