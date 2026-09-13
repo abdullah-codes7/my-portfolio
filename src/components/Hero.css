@@ -12,7 +12,11 @@
   min-height: 100vh;
   min-height: 100svh;
   overflow: hidden;
+  /* The literal wins the cascade and can never compute to transparent —
+     guards the first paint (LCP element) if the token layer ever fails
+     to inject (e.g. a wedged HMR session). Same value as the token. */
   background: var(--bg-primary);
+  background: #050505;
 }
 
 /* static blueprint grid */
