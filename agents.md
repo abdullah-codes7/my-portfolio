@@ -157,14 +157,14 @@ All interactions are modularized into a set of custom performance-tuned hooks:
 - **Router Navigation**: Mounts routes inside `<PageTransition>` and updates a global `<Navbar />` and `<Footer />`.
 
 ### 🌌 2. Hero Section (`src/components/Hero.jsx` & `src/components/Hero.css`)
-- **Mesh Gradients**: 3 background shapes moving vertically at distinct speeds (`useParallax`).
-- **Interactive Eclipse**:
-  - Central element with multiple orbital rings and SVG coronas.
-  - Spotlight overlay tracks pointer using CSS variables `--mx`, `--my`.
-  - Disc shrinks, blurs, and fades out programmatically based on parent scrolling progress (`scrollProgress`).
-- **Typewriter Effect**: Progressively reveals `"Full Stack Developer"` on load.
+- **WebGL Eclipse**: A single fullscreen fragment-shader quad (`EclipseCanvas`) draws the black disc, bright rim ring, corona haze/streaks, dashed orbit rings and orbiting dots — one draw call replaces the old 15+ composited DOM layers (SVG blur filters, blend modes).
+- **Render Lifecycle**: 30fps cap, DPR-capped backing store (≤1.5 DPR, ≤1400px), paused via IntersectionObserver + `visibilitychange`; `WEBGL_lose_context` on unmount.
+- **Static Fallback**: `.eclipse-fallback` renders when WebGL is unavailable or `prefers-reduced-motion` is set.
+- **Scroll Parallax**: One passive scroll listener writes a `--sp` (0→1) custom property on `.hero`; CSS `calc()` derives opacity/translate/scale — zero per-frame layout reads.
+- **Mouse Parallax**: Pointer position is lerped and passed as shader uniforms — never React state or DOM writes.
+- **Typewriter Effect**: Pure-CSS `steps(20)` reveal of "Full Stack Developer" with blinking caret — zero React re-renders.
 - **Action Buttons**: Uses `<Link>` with `useMagnetic` hook to draw mouse attraction on hover.
-- **Particles**: Generates 40 randomized drifting stars on creation.
+- **Particles**: 12 randomized drifting dots (transform/opacity only) over a static masked blueprint grid.
 
 ### 🍱 3. About Section (`src/components/About.jsx` & `src/components/About.css`)
 - **Terminal Element**: Displays a custom environment output (`whoami`) alongside a synchronized digital clock matching Pakistan Standard Time (`Asia/Karachi`).
