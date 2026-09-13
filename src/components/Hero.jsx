@@ -6,8 +6,6 @@ import './Hero.css'
 const Hero = memo(function Hero() {
   const [isVisible, setIsVisible] = useState(false)
   const [typedText, setTypedText] = useState('')
-  const [spotlightPos, setSpotlightPos] = useState({ x: 50, y: 50 })
-  const [isHovering, setIsHovering] = useState(false)
   const eclipseRef = useRef(null)
   const fullText = 'Full Stack Developer'
 
@@ -40,11 +38,14 @@ const Hero = memo(function Hero() {
   }, [isVisible])
 
   const handleMouseMove = useCallback((e) => {
-    if (!eclipseRef.current) return
-    const rect = eclipseRef.current.getBoundingClientRect()
+    const el = eclipseRef.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
     const x = ((e.clientX - rect.left) / rect.width) * 100
     const y = ((e.clientY - rect.top) / rect.height) * 100
-    setSpotlightPos({ x, y })
+    // Direct CSS var writes — the mouse never triggers a React render
+    el.style.setProperty('--mx', `${x}%`)
+    el.style.setProperty('--my', `${y}%`)
   }, [])
 
   // Unified scroll & mouse listener for maximum performance (bypasses React render)
@@ -163,8 +164,6 @@ const Hero = memo(function Hero() {
           ref={eclipseRef}
           className="hero-eclipse"
           onMouseMove={handleMouseMove}
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
         >
           {/* Orbital rings */}
           <div className="orbital-ring orbital-ring-1"></div>
@@ -181,14 +180,8 @@ const Hero = memo(function Hero() {
           <div className="e-glow-mid"></div>
           <div className="e-glow-inner"></div>
 
-          {/* Mouse spotlight */}
-          <div
-            className="e-spotlight"
-            style={{
-              '--mx': `${spotlightPos.x}%`,
-              '--my': `${spotlightPos.y}%`,
-            }}
-          ></div>
+          {/* Mouse spotlight — vars written directly by handleMouseMove */}
+          <div className="e-spotlight"></div>
 
           {/* Corona SVG */}
           <svg className="e-corona" viewBox="0 0 800 800">
